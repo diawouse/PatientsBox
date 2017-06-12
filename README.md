@@ -1,6 +1,6 @@
 # PatientsBox
 
-## Getting Started
+### Getting Started
 
 * Clone this repository: `git clone https://github.com/diawouse/PatientsBox.git`.
 * cd PatientsBox
