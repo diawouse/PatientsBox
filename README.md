@@ -9,3 +9,5 @@
 * Run in a terminal from the project root: ionic serve -l
 * defaut mail : email
 * default password : pass
+
+https://github.com/Jihed3entria/Facturaty
