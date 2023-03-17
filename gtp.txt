@@ -1,0 +1,115 @@
+Bien sûr, voici un exemple de configuration de multi-job batch avec Spring Boot:
+
+Supposons que vous avez trois tâches de traitement de données à exécuter en batch: TaskA, TaskB et TaskC. Vous pouvez créer une classe de configuration de batch qui définit les trois jobs:
+
+@Configuration
+@EnableBatchProcessing
+public class BatchConfig {
+
+    @Autowired
+    private JobBuilderFactory jobBuilderFactory;
+
+    @Autowired
+    private StepBuilderFactory stepBuilderFactory;
+
+    @Bean
+    public Job taskAJob() {
+        return jobBuilderFactory.get("taskAJob")
+                .incrementer(new RunIdIncrementer())
+                .flow(taskAStep())
+                .end()
+                .build();
+    }
+
+    @Bean
+    public Job taskBJob() {
+        return jobBuilderFactory.get("taskBJob")
+                .incrementer(new RunIdIncrementer())
+                .flow(taskBStep())
+                .end()
+                .build();
+    }
+
+    @Bean
+    public Job taskCJob() {
+        return jobBuilderFactory.get("taskCJob")
+                .incrementer(new RunIdIncrementer())
+                .flow(taskCStep())
+                .end()
+                .build();
+    }
+
+    @Bean
+    public Step taskAStep() {
+        return stepBuilderFactory.get("taskAStep")
+                .tasklet(taskATasklet())
+                .build();
+    }
+
+    @Bean
+    public Step taskBStep() {
+        return stepBuilderFactory.get("taskBStep")
+                .tasklet(taskBTasklet())
+                .build();
+    }
+
+    @Bean
+    public Step taskCStep() {
+        return stepBuilderFactory.get("taskCStep")
+                .tasklet(taskCTasklet())
+                .build();
+    }
+
+    @Bean
+    public Tasklet taskATasklet() {
+        return new TaskATasklet();
+    }
+
+    @Bean
+    public Tasklet taskBTasklet() {
+        return new TaskBTasklet();
+    }
+
+    @Bean
+    public Tasklet taskCTasklet() {
+        return new TaskCTasklet();
+    }
+}
+
+
+Dans cet exemple, chaque tâche est définie en tant que Job, qui contient un seul Step exécutant un Tasklet. Vous pouvez créer des Tasklet personnalisées pour chaque tâche en implémentant l'interface Tasklet.
+
+Ensuite, vous pouvez démarrer tous les jobs à partir de la méthode main de votre classe principale:
+
+@SpringBootApplication
+public class BatchApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(BatchApplication.class, args);
+    }
+
+    @Autowired
+    private JobLauncher jobLauncher;
+
+    @Autowired
+    private Job taskAJob;
+
+    @Autowired
+    private Job taskBJob;
+
+    @Autowired
+    private Job taskCJob;
+
+    @Bean
+    public CommandLineRunner run() {
+        return args -> {
+            jobLauncher.run(taskAJob, new JobParametersBuilder().toJobParameters());
+            jobLauncher.run(taskBJob, new JobParametersBuilder().toJobParameters());
+            jobLauncher.run(taskCJob, new JobParametersBuilder().toJobParameters());
+        };
+    }
+}
+
+Dans cet exemple, la méthode run est appelée lorsque l'application démarre, elle lance chaque job avec un nouveau JobParameters à chaque fois. Vous pouvez également planifier l'exécution des jobs à l'aide de @Scheduled ou de toute autre bibliothèque de planification.
+
+C'est un exemple très simple pour vous donner une idée de la configuration d'un multi-job batch avec Spring Boot. Vous pouvez bien sûr
