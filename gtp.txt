@@ -113,3 +113,29 @@ public class BatchApplication {
 Dans cet exemple, la méthode run est appelée lorsque l'application démarre, elle lance chaque job avec un nouveau JobParameters à chaque fois. Vous pouvez également planifier l'exécution des jobs à l'aide de @Scheduled ou de toute autre bibliothèque de planification.
 
 C'est un exemple très simple pour vous donner une idée de la configuration d'un multi-job batch avec Spring Boot. Vous pouvez bien sûr
+
+
+		List<DetailOperations> OpeToUpdate = new ArrayList<DetailOperations>();
+			for(DetailOperations one : detailOps) {
+				for(DetailOperations two : detailOpsFromDB) {
+					if(one.getId_operation()==two.getId_operation()  && two.getType_ope().equals(one.getType_ope())
+							&& two.getOld_iban_client_cdn().equals(one.getOld_iban_client_cdn())) {
+						OpeToUpdate.add(one);
+					}
+				}
+			}
+
+			/*List<DetailOperations> OpeToInsert = detailOps.stream().filter(two -> OpeToUpdate.stream()
+							.anyMatch(one -> !(one.getId_do()==two.getId_do() && two.getType_ope().equals(one.getType_ope())
+									&& two.getOld_iban_client_cdn().equals(one.getOld_iban_client_cdn()))))
+					.collect(Collectors.toList());*/
+
+			List<DetailOperations> OpeToInsert = new ArrayList<DetailOperations>();
+			for(DetailOperations one : detailOps) {
+				for(DetailOperations two : detailOpsFromDB) {
+					if(!(one.getId_operation()==two.getId_operation()  && two.getType_ope().equals(one.getType_ope())
+							&& two.getOld_iban_client_cdn().equals(one.getOld_iban_client_cdn()))) {
+						OpeToInsert.add(one);
+					}
+				}
+			}
