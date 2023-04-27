@@ -139,3 +139,19 @@ C'est un exemple très simple pour vous donner une idée de la configuration d'u
 					}
 				}
 			}
+
+
+Set<DetailOperations> detailOpsFromDBSet = new HashSet<>(detailOpsFromDB);
+List<DetailOperations> OpeToUpdate = detailOps.parallelStream()
+        .filter(one -> detailOpsFromDBSet.parallelStream()
+                .anyMatch(two -> one.getId_operation() == two.getId_operation() && 
+                        two.getType_ope().equals(one.getType_ope()) && 
+                        two.getOld_iban_client_cdn().equals(one.getOld_iban_client_cdn())))
+        .collect(Collectors.toList());
+
+List<DetailOperations> OpeToInsert = detailOps.parallelStream()
+        .filter(one -> detailOpsFromDBSet.parallelStream()
+                .noneMatch(two -> one.getId_operation() == two.getId_operation() && 
+                        two.getType_ope().equals(one.getType_ope()) && 
+                        two.getOld_iban_client_cdn().equals(one.getOld_iban_client_cdn())))
+        .collect(Collectors.toList());
