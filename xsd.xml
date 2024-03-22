@@ -1,0 +1,15 @@
+<dep>
+  <entete idEmet="string" lInstrPart="string" idDep="string" nNbDecla="3" lHorodatage="string">
+    <assureur>
+      <pMo lRs="string" idPmo="string"/>
+      <adr>
+        <adrNC cnNatAdr="00" nCPays="3" ccCPost="string" lBurDist="string" lLCom="string" lCplAdr="string" lNumEtVoie="string"/>
+      </adr>
+    </assureur>
+  </entete>
+  <contenu>
+    <decla idDecla="3" nIndDecCor="2" idCont="string" lNumCont="string" cnNatCont="03" dDatEfFisc="2014-04-03" dDatEvtDec="2008-07-26" dDatConEvt="2005-01-01+01:00" cnNatEvtDec="04" cnCausEvt="00" cnIndModDeclaBenef="1" cnIndRegAch="0" cnIndInit="0" cnIndRachCont="1" cnIndRecAnn="0" dDatAve="2011-06-30+02:00">
+      <mtDecla nVal="3" cnNatMontDecla="10"/>
+    </decla>
+  </contenu>
+</dep>
