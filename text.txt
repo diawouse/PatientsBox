@@ -1,684 +1,100 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!--	Modifications apportées dans la version 2.0 -->
-<!--  Balise d'entête : version passe de 1.3.6 à 2.0 -->
-<!-- Ajout des indicateurs cnIndInit, cnIndRachCont, cnIndRecAnn dans la déclaration -->
-<!-- Ajout des énumérations correspondantes pour ces 3 nouvels indices -->
-<!-- Enrichissement de l'énumération pour la nature du contrat -->
-<!-- Enrichissement de l'énumération pour la cause de l'événement -->
-<!-- Passade de l'occurence d'un assureur de 2 à indéfini -->
-
-<!--	Modifications apportées dans la version 1.3.6 -->
-<!--  Correction du format du fichier -->
-<!--  Balise d'entête : version passe de 1.3.5 à 1.3.6-->
-
-<!--	Modifications apportées dans la version 1.3.5 -->
-<!--  Balise d'entête : version passe de 1.3.4 à 1.3.5-->
-<!--  En date du 16/02/2016  Attribut idPmo		:  Passage de "\d{9}|W*\d{9}|\d{7}|\w{6}" à "\d{9}|W\d{9}|\d{7}|\w{6}"	-->
-
-<!--	Modifications apportées dans la version 1.3.4 -->
-<!--  Balise d'entête : version passe de 1.3.3 à 1.3.4-->
-<!--  En date du 27/11/2015  Attribut cnCSex				:  Correction xsd:string au lieu de xsd:int	-->
-<!--  En date du 27/11/2015  Attribut cnIndModDeclaBenef	:  Correction xsd:string au lieu de xsd:int	-->
-<!--  En date du 27/11/2015  Attribut cnIndRegAch			:  Correction xsd:string au lieu de xsd:int	-->
-<!--  En date du 27/11/2015  Attribut nIndDecCor			:  Correction xsd:string au lieu de xsd:int	-->
-<!--  En date du 27/11/2015  Attribut cnQualBen				:  Correction xsd:string au lieu de xsd:int	-->
-
-<!--  En date du 25/11/2015  Attribut lRs 	: Ajout dans le pattern du caractère + (avec caractère d'échappement)	-->
-
-<!-- Modifications apportées dans la version 1.3.2 -->
-<!--    Balise d'entête : version passe de 1.0 à 1.3.2 -->
-<!--    Attribut idEmet : pattern passe de ([A-Z]|[a-z]|[0-9]){14} à [0-9]{14} -->
-<!--    Attribut ncComNais : pattern passe de \d{3} à [0-9]{2,3} -->
-
-<!--<xsd:schema attributeFormDefault="unqualified"
-            elementFormDefault="qualified" version="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">-->
-<xsd:schema attributeFormDefault="unqualified"
-            elementFormDefault="qualified" version="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <!--  Identifiant émetteur : Mini maxi 14 en chaine  -->
-    <!--  Identifiant SIRET du prestataire en chiffres  -->
-    <xsd:attribute name="idEmet">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:pattern value="[0-9]{14}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Instruction particulière : Mini 1 et maxi 1000 en chaine  -->
-    <!--  Aucune précision dans le CDC : Mis en alphanumérique avec les caractères : ",-/:;@àâçèéêëîïôùûüÿœæ." et l'espace   -->
-    <!--  Dans la 1.3.3 Récupération des caractères spéciaux par rapport à la version 1.3 -->
-    <xsd:attribute name="lInstrPart">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([A-Z]|[a-z]|[0-9]| |,|-|/|:|;|@|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ|\.|&lt;|&#60;|&gt;|&#62;|&amp;|&#38;|&#39;|&quot;|&#34;|&#35;){1,1000}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Identifiant unique du dépôt : Au format SSSSSSSSS-AAAA-MM-JJ-NNNN  -->
-    <!--  Numéro SIREN sur 9 chiffres + date + numéro séquentiel -->
-    <xsd:attribute name="idDep">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:pattern value="\d{9}-(20[0-9][0-9])-(0[1-9]|1[0-2])-(0[1-9]|([1,2][0-9])|3[0,1])-\d{4}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Nombre de déclarations : Mini 1 et maxi 8 en numérique  -->
-    <!--  Nombre de déclarations >= 0 < 100 000 000  -->
-    <xsd:attribute name="nNbDecla">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:int">
-                <xsd:pattern value="\d{1,8}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Horodatage : Mini et maxi 19 en chaine  -->
-    <!--  Au format AAAA-MM-JJ hh:mm:ss  -->
-    <xsd:attribute name="lHorodatage">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:pattern value="(20[0-9][0-9])-(0[1-9]|1[0-2])-(0[1-9]|([1,2][0-9])|3[0,1]) (([0-1][0-9]|2[0-4])(:([0-5][0-9])){2})"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Identifiant de la déclaration : Mini1 et maxi 8 en chaine   -->
-    <!--  Numéro incrémenté séquentiellement : Mis en numérique  -->
-    <xsd:attribute name="idDecla">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:int">
-                <xsd:pattern value="\d{1,8}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Indice de correction : Mini maxi 1 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="nIndDecCor">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="0"/>
-                <xsd:enumeration value="1"/>
-                <xsd:enumeration value="2"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Identifiant du contrat : Mini 1 et maxi 50 en chaine  -->
-    <!--  En alphanumérique, espace, tiret et /  -->
-    <xsd:attribute name="idCont">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |-|/){1,50}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Numéro de contrat : Mini 1 et maxi 30 en chaine  -->
-    <!--  En alphanumérique, espace, tiret et /  -->
-    <xsd:attribute name="lNumCont">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |-|/){1,30}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Nature du contrat : Mini maxi 2 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnNatCont">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="00"/>
-                <xsd:enumeration value="01"/>
-                <xsd:enumeration value="02"/>
-                <xsd:enumeration value="03"/>
-                <xsd:enumeration value="04"/>
-                <xsd:enumeration value="05"/>
-                <xsd:enumeration value="06"/>
-                <xsd:enumeration value="07"/>
-                <xsd:enumeration value="08"/>
-                <xsd:enumeration value="09"/>
-                <xsd:enumeration value="10"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Date d'effet fiscal : Format AAAA-MM-JJ -->
-    <xsd:attribute name="dDatEfFisc" type="xsd:date"/>
-    <!--  Date de l'évement déclaré : Format AAAA-MM-JJ -->
-    <xsd:attribute name="dDatEvtDec" type="xsd:date"/>
-    <!--  Date de connaissance de l'évènement : Format AAAA-MM-JJ -->
-    <xsd:attribute name="dDatConEvt" type="xsd:date"/>
-    <!--  Nature de l'évènement déclaré : Mini maxi 2 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnNatEvtDec">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="00"/>
-                <xsd:enumeration value="01"/>
-                <xsd:enumeration value="02"/>
-                <xsd:enumeration value="03"/>
-                <xsd:enumeration value="04"/>
-                <xsd:enumeration value="05"/>
-                <xsd:enumeration value="06"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Cause de l'évènement déclaré : Mini maxi 2 en chaine   -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnCausEvt">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="00"/>
-                <xsd:enumeration value="01"/>
-                <xsd:enumeration value="02"/>
-                <xsd:enumeration value="03"/>
-                <xsd:enumeration value="04"/>
-                <xsd:enumeration value="05"/>
-                <xsd:enumeration value="06"/>
-                <xsd:enumeration value="07"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Indicateur du mode de déclaration des bénéficiaires : Mini maxi 1 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnIndModDeclaBenef">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="0"/>
-                <xsd:enumeration value="1"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Indicateur de règlement achevé : Mini maxi 1 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnIndRegAch">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="0"/>
-                <xsd:enumeration value="1"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Indicateur de l'indice d'initialisation : Mini maxi 1 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnIndInit">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="0"/>
-                <xsd:enumeration value="1"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Indicateur de l'indice de caractère rachetable : Mini maxi 1 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnIndRachCont">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="0"/>
-                <xsd:enumeration value="1"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Indicateur de l'indice de reconduction tacite annuelle : Mini maxi 1 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnIndRecAnn">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="0"/>
-                <xsd:enumeration value="1"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Date de l'avenant : Format AAAA-MM-JJ  -->
-    <xsd:attribute name="dDatAve" type="xsd:date"/>
-    <!--  Qualité du bénéficiaire : Mini maxi 2 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnQualBen">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="00"/>
-                <xsd:enumeration value="01"/>
-                <xsd:enumeration value="02"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Raison sociale : Mini 1 et maxi 70 en chaine  -->
-    <!--  Aucune précision dans le CDC : Mis en alphanumérique avec les caractères : ",-/+:;@àâçèéêëîïôùûüÿœæ." et l'espace   -->
-    <!--  Dans la 1.3.3 Récupération des caractères spéciaux par rapport à la version 1.3 -->
-    <xsd:attribute name="lRs">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([A-Z]|[a-z]|[0-9]| |,|-|/|:|\+|;|@|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ|\.|&lt;|&#60;|&gt;|&#62;|&amp;|&#38;|&#39;|&quot;|&#34;|&#35;){1,70}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Identifiant de la personne morale : Mini 9 et maxi 10 en chaine  -->
-    <!--  Soit 9 chiffres pour le SIREN - Soit W suivi de 9 chiffres pour le RAN -->
-    <xsd:attribute name="idPmo">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:pattern value="\d{9}|W\d{9}|\d{7}|\w{6}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Code sexe :  Mini maxi 1 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnCSex">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="1"/>
-                <xsd:enumeration value="2"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Prénom : Mini 1 et maxi 40 en chaine  -->
-    <!--  En alpha avec les caractères : "àâçèéêëîïôùûüÿœæ" et l'espace et l'apostrophe   -->
-    <xsd:attribute name="lPren">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([a-z]|[A-Z]| |-|'|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,40}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Date de naissance : Format AAAA-MM-JJ  -->
-    <!--  Les valeurs à 0000 pour l'année, 00 pour le mois et le jour sont acceptées  -->
-    <xsd:attribute name="dDNais">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:pattern value="\d{4}-(0[0-9]|1[0-2])-(0[0-9]|([1,2][0-9])|3[0,1])"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!-- Date de décès : Format AAAA-MM-JJ  -->
-    <xsd:attribute name="dDDec" type="xsd:date"/>
-    <!--  Code département de naissance : Mini 2 et maxi 3 en chaine  -->
-    <!--  Code INSEE : Mis en alphanumérique -->
-    <xsd:attribute name="ccCDepNais">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:pattern value="\w{2,3}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Code pays de naissance : Mini maxi 5 en numérique  -->
-    <!--  Code INSEE  -->
-    <xsd:attribute name="nCPaysNais">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:int">
-                <xsd:pattern value="\d{5}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!-- Libellé du pays de naissance : Mini 1 et maxi 70 en chaine  -->
-    <!-- En alpha, tiret, espace et apostrophe + "àâçèéêëîïôùûüÿœæ" -->
-    <xsd:attribute name="lLPaysNais">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([a-z]|[A-Z]| |-|'|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,70}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!-- Code commune de naissance : Mini 2 et maxi 3 en chiffres  -->
-    <!--  Code INSEE  -->
-    <xsd:attribute name="nCComNais">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:pattern value="[0-9]{2,3}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Libellé commune de naissance : Mini 1 et maxi 30 en chaine  -->
-    <!--  En alphanumérique, tiret, espace, apostrophe et / et "àâçèéêëîïôùûüÿœæ"  -->
-    <xsd:attribute name="lLComNais">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |'|-|/|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,30}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Nom : Mini 1 et maxi 10 en chaine  -->
-    <!--  En alpha, espace, tiret et apostrophe et "àâçèéêëîïôùûüÿœæ"  -->
-    <xsd:attribute name="lNomPat">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([a-z]|[A-Z]| |-|'|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,100}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Nom d'usage : Mini1 et maxi 100 en chaine  -->
-    <!--  En alpha, espace, tiret et apostrophe et "àâçèéêëîïôùûüÿœæ"  -->
-    <xsd:attribute name="lNomUs">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([a-z]|[A-Z]| |-|'|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,100}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Nature de l'adresse : Mini maxi 2 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnNatAdr">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="00"/>
-                <xsd:enumeration value="01"/>
-                <xsd:enumeration value="02"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Code pays de l'adresse : Mini maxi 5 en numérique  -->
-    <!--  Code INSEE  -->
-    <xsd:attribute name="nCPays">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:int">
-                <xsd:pattern value="\d{5}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Code département de l'adresse : Mini maxi 3 en chaine  -->
-    <!--  Code Fantoir : Mis en alphanumérique  -->
-    <xsd:attribute name="ccCDep">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:pattern value="\w{3}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Code de la commune de l'adresse : mini maxi 3 en numérique  -->
-    <xsd:attribute name="nCCom">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:int">
-                <xsd:pattern value="\d{3}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Code voie de l'adresse : mini 1 et maxi 4 en chaine  -->
-    <!--  Code Fantoir : En alphanumérique  -->
-    <xsd:attribute name="ccCVoie">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:pattern value="\w{1,4}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Numéro d'immeuble : mini 1 et maxi 4 en chaine  -->
-    <!--  En alphanumérique et espace  -->
-    <xsd:attribute name="lNImm">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| ){1,4}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Indice de répétition : mini maxi 1 chaine  -->
-    <!--  En alpha strict  -->
-    <xsd:attribute name="lIRep">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:pattern value="([A-Z]|[a-z])"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Complément d'adresse : mini 1 et maxi 38 en chaine  -->
-    <!--  En alphanumérique, espace, apostrophe, tiret ou / et "àâçèéêëîïôùûüÿœæ" -->
-    <xsd:attribute name="lCplAdr">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |'|-|/|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ|\.|,){1,38}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Code postal : Mini 1 et maxi 10 en chaine  -->
-    <!--  En alphanumérique ou tiret -->
-    <xsd:attribute name="ccCPost">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:pattern value="([a-z]|[A-Z]|[0-9]|-){1,10}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Bureau distributeur : mini 1 maxi 38 en chaine  -->
-    <!--  En alphanumérique, espace, tiret, apostrophe, / et "àâçèéêëîïôùûüÿœæ" -->
-    <xsd:attribute name="lBurDist">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |'|-|/|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,38}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Libellé de la commune : mini 1 maxi 38 en chaine  -->
-    <!--  En alphanumérique, espace, tiret, apostrophe, / et "àâçèéêëîïôùûüÿœæ" -->
-    <xsd:attribute name="lLCom">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |'|-|/|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,38}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!-- Type et libellé de voie : Mini 1 et maxi 38 en chaine  -->
-    <!-- En alphanumérique, espace, apostrophe, tiret et "àâçèéêëîïôùûüÿœæ" -->
-    <xsd:attribute name="lNumEtVoie">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:whiteSpace value="collapse"/>
-                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |'|-|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,38}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Nature du montant du bénéficiaire : Mini maxi 2 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnNatMontBenef">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="00"/>
-                <xsd:enumeration value="01"/>
-                <xsd:enumeration value="02"/>
-                <xsd:enumeration value="03"/>
-                <xsd:enumeration value="04"/>
-                <xsd:enumeration value="05"/>
-                <xsd:enumeration value="06"/>
-                <xsd:enumeration value="07"/>
-                <xsd:enumeration value="08"/>
-                <xsd:enumeration value="09"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Nature du montant de la déclaration : Mini maxi 2 en chaine  -->
-    <!--  Enumération  -->
-    <xsd:attribute name="cnNatMontDecla">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="09"/>
-                <xsd:enumeration value="10"/>
-                <xsd:enumeration value="11"/>
-                <xsd:enumeration value="12"/>
-                <xsd:enumeration value="13"/>
-                <xsd:enumeration value="14"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Valeur du montant : Mini 1 et maxi 10 en numérique  -->
-    <!--  Sans décimale  -->
-    <xsd:attribute name="nVal">
-        <xsd:simpleType>
-            <xsd:restriction base="xsd:int">
-                <xsd:pattern value="\d{1,10}"/>
-            </xsd:restriction>
-        </xsd:simpleType>
-    </xsd:attribute>
-    <!--  Personne morale pour souscripteur et bénéficiaire : L'attribut idPmo n'est pas obligatoire  -->
-    <xsd:complexType name="personneMorale">
-        <xsd:attribute ref="lRs" use="required"/>
-        <xsd:attribute ref="idPmo" use="optional"/>
-    </xsd:complexType>
-    <!--  Personne morale pour l'assureur : Les 2 attributs sont obligatoires  -->
-    <xsd:complexType name="personneMoraleAssureur">
-        <xsd:attribute ref="lRs" use="required"/>
-        <xsd:attribute ref="idPmo" use="required"/>
-    </xsd:complexType>
-    <!--  Type Code pays de naissance : Pour le choice entre le code ou le libellé du pays de naissance  -->
-    <xsd:complexType name="paysNaissanceCode">
-        <xsd:attribute ref="nCPaysNais" use="required"/>
-        <xsd:attribute ref="lLPaysNais" use="optional"/>
-    </xsd:complexType>
-    <!--  Type Libellé pays de naissance : Pour le choice entre le code ou le libellé du pays de naissance  -->
-    <xsd:complexType name="paysNaissance">
-        <xsd:attribute ref="nCPaysNais" use="optional"/>
-        <xsd:attribute ref="lLPaysNais" use="optional"/>
-    </xsd:complexType>
-    <!-- Choice entre code ou libellé de la commune de naissance -->
-    <xsd:complexType name="communeNaissance">
-        <xsd:attribute ref="nCComNais" use="optional"/>
-        <xsd:attribute ref="lLComNais" use="optional"/>
-    </xsd:complexType>
-    <!-- Choice entre le nom patronyme ou le nom d'usage -->
-    <xsd:complexType name="nom">
-        <xsd:attribute ref="lNomPat" use="optional"/>
-        <xsd:attribute ref="lNomUs" use="optional"/>
-    </xsd:complexType>
-    <!--  Balise de la personne physique  -->
-    <xsd:complexType name="personnePhysique">
-        <xsd:sequence>
-            <xsd:element maxOccurs="1" minOccurs="1" name="nom" type="nom"/>
-            <xsd:element maxOccurs="1" minOccurs="0" name="paysNais" type="paysNaissance"/>
-            <xsd:element maxOccurs="1" minOccurs="0" name="comNais" type="communeNaissance"/>
-        </xsd:sequence>
-        <xsd:attribute ref="cnCSex" use="optional"/>
-        <xsd:attribute ref="lPren" use="optional"/>
-        <xsd:attribute ref="dDNais" use="optional"/>
-        <xsd:attribute ref="dDDec" use="optional"/>
-        <xsd:attribute ref="ccCDepNais" use="optional"/>
-    </xsd:complexType>
-    <!--  Type pour l'adresse codée  -->
-    <xsd:complexType name="adresseCodee">
-        <xsd:attribute ref="cnNatAdr" use="required"/>
-        <xsd:attribute ref="nCPays" use="required"/>
-        <xsd:attribute ref="ccCDep" use="required"/>
-        <xsd:attribute ref="nCCom" use="required"/>
-        <xsd:attribute ref="ccCVoie" use="required"/>
-        <xsd:attribute ref="lNImm" use="optional"/>
-        <xsd:attribute ref="lIRep" use="optional"/>
-        <xsd:attribute ref="lCplAdr" use="optional"/>
-    </xsd:complexType>
-    <!--  Type pour l'adresse non codée  -->
-    <xsd:complexType name="adresseNonCodee">
-        <xsd:attribute ref="cnNatAdr" use="required"/>
-        <xsd:attribute ref="nCPays" use="required"/>
-        <xsd:attribute ref="ccCPost" use="required"/>
-        <xsd:attribute ref="lBurDist" use="optional"/>
-        <xsd:attribute ref="lLCom" use="required"/>
-        <xsd:attribute ref="lCplAdr" use="optional"/>
-        <xsd:attribute ref="lNumEtVoie" use="optional"/>
-    </xsd:complexType>
-    <!-- Choice entre adresse codée et adresse non codée  -->
-    <xsd:complexType name="adresse">
-        <xsd:sequence>
-            <xsd:choice>
-                <xsd:element name="adrC" type="adresseCodee"/>
-                <xsd:element name="adrNC" type="adresseNonCodee"/>
-            </xsd:choice>
-        </xsd:sequence>
-    </xsd:complexType>
-    <!--  Balise montant du bénéficiaire -->
-    <xsd:complexType name="montantBenef">
-        <xsd:attribute ref="nVal" use="required"/>
-        <xsd:attribute ref="cnNatMontBenef" use="required"/>
-    </xsd:complexType>
-    <!-- Balise montant de la déclaration  -->
-    <xsd:complexType name="montantDecla">
-        <xsd:attribute ref="nVal" use="required"/>
-        <xsd:attribute ref="cnNatMontDecla" use="required"/>
-    </xsd:complexType>
-    <!--  Balise souscripteur : Choice entre personne physique et personne morale  -->
-    <xsd:complexType name="souscripteur">
-        <xsd:sequence>
-            <xsd:choice>
-                <xsd:element name="pPh" type="personnePhysique"/>
-                <xsd:element name="pMo" type="personneMorale"/>
-            </xsd:choice>
-            <xsd:element maxOccurs="3" minOccurs="1" name="adr" type="adresse"/>
-        </xsd:sequence>
-    </xsd:complexType>
-    <!--  Balise assuré : Choice entre personne physique et personne morale  -->
-    <xsd:complexType name="assure">
-        <xsd:sequence>
-            <xsd:element maxOccurs="1" minOccurs="1" name="pPh" type="personnePhysique"/>
-            <xsd:element maxOccurs="3" minOccurs="1" name="adr" type="adresse"/>
-        </xsd:sequence>
-    </xsd:complexType>
-    <!--  Balise Bénéficiaire : Choice entre personne physique et personne morale  -->
-    <xsd:complexType name="beneficiaire">
-        <xsd:sequence>
-            <xsd:choice>
-                <xsd:element name="pPh" type="personnePhysique"/>
-                <xsd:element name="pMo" type="personneMorale"/>
-            </xsd:choice>
-            <xsd:element maxOccurs="3" minOccurs="0" name="adr" type="adresse"/>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="mtBenef" type="montantBenef"/>
-        </xsd:sequence>
-        <xsd:attribute ref="cnQualBen" use="optional"/>
-    </xsd:complexType>
-    <!--  Balise Assureur  -->
-    <xsd:complexType name="assureur">
-        <xsd:sequence>
-            <xsd:element maxOccurs="1" minOccurs="1" name="pMo" type="personneMoraleAssureur"/>
-            <xsd:element maxOccurs="1" minOccurs="1" name="adr" type="adresse"/>
-        </xsd:sequence>
-    </xsd:complexType>
-    <!--  Balise Déclaration  -->
-    <xsd:complexType name="declaration">
-        <xsd:sequence>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="mtDecla" type="montantDecla"/>
-        </xsd:sequence>
-        <xsd:attribute ref="idDecla" use="required"/>
-        <xsd:attribute ref="nIndDecCor" use="required"/>
-        <xsd:attribute ref="idCont" use="required"/>
-        <xsd:attribute ref="lNumCont" use="required"/>
-        <xsd:attribute ref="cnNatCont" use="required"/>
-        <xsd:attribute ref="dDatEfFisc" use="required"/>
-        <xsd:attribute ref="dDatEvtDec" use="required"/>
-        <xsd:attribute ref="dDatConEvt" use="required"/>
-        <xsd:attribute ref="cnNatEvtDec" use="required"/>
-        <xsd:attribute ref="cnCausEvt" use="optional"/>
-        <xsd:attribute ref="cnIndModDeclaBenef" use="required"/>
-        <xsd:attribute ref="cnIndRegAch" use="required"/>
-        <xsd:attribute ref="cnIndInit" use="optional"/>
-        <xsd:attribute ref="cnIndRachCont" use="optional"/>
-        <xsd:attribute ref="cnIndRecAnn" use="optional"/>
-        <xsd:attribute ref="dDatAve" use="optional"/>
-    </xsd:complexType>
-    <!--  Balise Entête  -->
-    <xsd:complexType name="entete">
-        <xsd:sequence>
-            <xsd:element maxOccurs="1" minOccurs="1" name="assureur" type="assureur"/>
-        </xsd:sequence>
-        <xsd:attribute ref="idEmet" use="required"/>
-        <xsd:attribute ref="lInstrPart" use="optional"/>
-        <xsd:attribute ref="idDep" use="required"/>
-        <xsd:attribute ref="nNbDecla" use="required"/>
-        <xsd:attribute ref="lHorodatage" use="required"/>
-    </xsd:complexType>
-    <!--  Balise Contenu  -->
-    <xsd:complexType name="contenu">
-        <xsd:sequence>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="decla" type="declaration"/>
-        </xsd:sequence>
-    </xsd:complexType>
-    <!--  Dalise Dep  -->
-    <xsd:element name="dep">
-        <xsd:complexType>
-            <xsd:sequence>
-                <xsd:element maxOccurs="1" minOccurs="1" name="entete" type="entete"/>
-                <xsd:element maxOccurs="1" minOccurs="1" name="contenu" type="contenu"/>
-            </xsd:sequence>
-        </xsd:complexType>
-    </xsd:element>
-</xsd:schema>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<dep>
+    <entete idEmet="45175156400050" lInstrPart="Déclaration émise par PTF CA-AS pour test" idDep="334028124-2023-05-31-9001" nNbDecla="29" lHorodatage="2024-03-26 12:54:19">
+        <assureur>
+            <pMo idPmo="905383667" lRs="CREDIT AGRICOLE ASSURANCES RETRAITE"/>
+            <adr>
+                <adrNC ccCPost="75015" cnNatAdr="00" lBurDist="PARIS" lLCom="PARIS" lNumEtVoie="16 boulevard de Vaugirard" nCPays="99100"/>
+            </adr>
+        </assureur>
+    </entete>
+    <contenu>
+        <decla idDecla="02002464" nIndDecCor="0" idCont="70001902158" lNumCont="83612212610750" cnNatCont="00" dDatEfFisc="1993-04-01" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="205236"/>
+        </decla>
+        <decla idDecla="02002514" nIndDecCor="0" idCont="70001902582" lNumCont="88700000420242" cnNatCont="00" dDatEfFisc="1993-04-06" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="21327"/>
+        </decla>
+        <decla idDecla="02002564" nIndDecCor="0" idCont="70001903795" lNumCont="82280720833730" cnNatCont="00" dDatEfFisc="1993-04-08" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="161975"/>
+        </decla>
+        <decla idDecla="02002614" nIndDecCor="0" idCont="70001904360" lNumCont="80286180873039" cnNatCont="00" dDatEfFisc="1993-04-13" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="115254"/>
+        </decla>
+        <decla idDecla="02002664" nIndDecCor="0" idCont="70001905390" lNumCont="81000503546700" cnNatCont="00" dDatEfFisc="1993-04-16" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="28511"/>
+        </decla>
+        <decla idDecla="02002714" nIndDecCor="0" idCont="70001906420" lNumCont="82213102606780" cnNatCont="00" dDatEfFisc="1993-04-16" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="27626"/>
+        </decla>
+        <decla idDecla="02002764" nIndDecCor="0" idCont="70001907340" lNumCont="81006991460701" cnNatCont="00" dDatEfFisc="1993-04-16" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="81974"/>
+        </decla>
+        <decla idDecla="02002814" nIndDecCor="0" idCont="70001908220" lNumCont="82903364470730" cnNatCont="00" dDatEfFisc="1993-04-20" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="21165"/>
+        </decla>
+        <decla idDecla="02002864" nIndDecCor="0" idCont="70001909187" lNumCont="86015418801378" cnNatCont="00" dDatEfFisc="1993-04-21" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="39715"/>
+        </decla>
+        <decla idDecla="02002914" nIndDecCor="0" idCont="70001910237" lNumCont="86753952374296" cnNatCont="00" dDatEfFisc="1993-04-16" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="262128"/>
+        </decla>
+        <decla idDecla="02002964" nIndDecCor="0" idCont="70001911060" lNumCont="81022187421701" cnNatCont="00" dDatEfFisc="1993-04-22" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="40100"/>
+        </decla>
+        <decla idDecla="02003014" nIndDecCor="0" idCont="70001912226" lNumCont="80220048491002" cnNatCont="00" dDatEfFisc="1993-04-27" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="49232"/>
+        </decla>
+        <decla idDecla="02003064" nIndDecCor="0" idCont="70001913015" lNumCont="86018855709178" cnNatCont="00" dDatEfFisc="1993-04-24" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="140827"/>
+        </decla>
+        <decla idDecla="02003114" nIndDecCor="0" idCont="70001913955" lNumCont="86638399427730" cnNatCont="00" dDatEfFisc="1993-04-27" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="20150"/>
+        </decla>
+        <decla idDecla="02003164" nIndDecCor="0" idCont="70001915259" lNumCont="81022072782700" cnNatCont="00" dDatEfFisc="1993-04-29" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="57844"/>
+        </decla>
+        <decla idDecla="02003214" nIndDecCor="0" idCont="70001916095" lNumCont="86185864943730" cnNatCont="00" dDatEfFisc="1993-05-04" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="222493"/>
+        </decla>
+        <decla idDecla="02003264" nIndDecCor="0" idCont="70001917183" lNumCont="86697505941695" cnNatCont="00" dDatEfFisc="1993-05-06" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="147934"/>
+        </decla>
+        <decla idDecla="02003314" nIndDecCor="0" idCont="70001918390" lNumCont="82903611345780" cnNatCont="00" dDatEfFisc="1993-05-05" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="69644"/>
+        </decla>
+        <decla idDecla="02003364" nIndDecCor="0" idCont="70001919857" lNumCont="88265086140424" cnNatCont="00" dDatEfFisc="1993-05-06" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="92871"/>
+        </decla>
+        <decla idDecla="02003414" nIndDecCor="0" idCont="70001920816" lNumCont="81020904843700" cnNatCont="00" dDatEfFisc="1993-05-13" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="78396"/>
+        </decla>
+        <decla idDecla="02003464" nIndDecCor="0" idCont="70001921310" lNumCont="86682008578780" cnNatCont="00" dDatEfFisc="1993-05-07" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="22291"/>
+        </decla>
+        <decla idDecla="02003514" nIndDecCor="0" idCont="70001922413" lNumCont="82905010586780" cnNatCont="00" dDatEfFisc="1993-05-15" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="51890"/>
+        </decla>
+        <decla idDecla="02003564" nIndDecCor="0" idCont="70001923091" lNumCont="82903972216780" cnNatCont="00" dDatEfFisc="1993-05-15" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="31464"/>
+        </decla>
+        <decla idDecla="02003614" nIndDecCor="0" idCont="70001923796" lNumCont="86013067204578" cnNatCont="00" dDatEfFisc="1993-05-19" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="39909"/>
+        </decla>
+        <decla idDecla="02003664" nIndDecCor="0" idCont="70001924579" lNumCont="83602852098750" cnNatCont="00" dDatEfFisc="1993-05-17" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="48716"/>
+        </decla>
+        <decla idDecla="02003714" nIndDecCor="0" idCont="70001925775" lNumCont="82232055663780" cnNatCont="00" dDatEfFisc="1993-05-25" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="22012"/>
+        </decla>
+        <decla idDecla="02003764" nIndDecCor="0" idCont="70001926628" lNumCont="86772815748003" cnNatCont="00" dDatEfFisc="1993-05-20" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="36977"/>
+        </decla>
+        <decla idDecla="02003814" nIndDecCor="0" idCont="70001927458" lNumCont="86636275500780" cnNatCont="00" dDatEfFisc="1993-05-27" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="10" nVal="40673"/>
+        </decla>
+        <decla idDecla="02003864" nIndDecCor="0" idCont="70001928215" lNumCont="89107352309715" cnNatCont="00" dDatEfFisc="1993-05-25" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
+            <mtDecla cnNatMontDecla="12" nVal="8361"/>
+        </decla>
+    </contenu>
+</dep>
