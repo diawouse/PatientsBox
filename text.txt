@@ -1,100 +1,45 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<dep>
-    <entete idEmet="45175156400050" lInstrPart="Déclaration émise par PTF CA-AS pour test" idDep="334028124-2023-05-31-9001" nNbDecla="29" lHorodatage="2024-03-26 12:54:19">
-        <assureur>
-            <pMo idPmo="905383667" lRs="CREDIT AGRICOLE ASSURANCES RETRAITE"/>
-            <adr>
-                <adrNC ccCPost="75015" cnNatAdr="00" lBurDist="PARIS" lLCom="PARIS" lNumEtVoie="16 boulevard de Vaugirard" nCPays="99100"/>
-            </adr>
-        </assureur>
-    </entete>
-    <contenu>
-        <decla idDecla="02002464" nIndDecCor="0" idCont="70001902158" lNumCont="83612212610750" cnNatCont="00" dDatEfFisc="1993-04-01" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="205236"/>
-        </decla>
-        <decla idDecla="02002514" nIndDecCor="0" idCont="70001902582" lNumCont="88700000420242" cnNatCont="00" dDatEfFisc="1993-04-06" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="21327"/>
-        </decla>
-        <decla idDecla="02002564" nIndDecCor="0" idCont="70001903795" lNumCont="82280720833730" cnNatCont="00" dDatEfFisc="1993-04-08" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="161975"/>
-        </decla>
-        <decla idDecla="02002614" nIndDecCor="0" idCont="70001904360" lNumCont="80286180873039" cnNatCont="00" dDatEfFisc="1993-04-13" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="115254"/>
-        </decla>
-        <decla idDecla="02002664" nIndDecCor="0" idCont="70001905390" lNumCont="81000503546700" cnNatCont="00" dDatEfFisc="1993-04-16" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="28511"/>
-        </decla>
-        <decla idDecla="02002714" nIndDecCor="0" idCont="70001906420" lNumCont="82213102606780" cnNatCont="00" dDatEfFisc="1993-04-16" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="27626"/>
-        </decla>
-        <decla idDecla="02002764" nIndDecCor="0" idCont="70001907340" lNumCont="81006991460701" cnNatCont="00" dDatEfFisc="1993-04-16" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="81974"/>
-        </decla>
-        <decla idDecla="02002814" nIndDecCor="0" idCont="70001908220" lNumCont="82903364470730" cnNatCont="00" dDatEfFisc="1993-04-20" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="21165"/>
-        </decla>
-        <decla idDecla="02002864" nIndDecCor="0" idCont="70001909187" lNumCont="86015418801378" cnNatCont="00" dDatEfFisc="1993-04-21" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="39715"/>
-        </decla>
-        <decla idDecla="02002914" nIndDecCor="0" idCont="70001910237" lNumCont="86753952374296" cnNatCont="00" dDatEfFisc="1993-04-16" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="262128"/>
-        </decla>
-        <decla idDecla="02002964" nIndDecCor="0" idCont="70001911060" lNumCont="81022187421701" cnNatCont="00" dDatEfFisc="1993-04-22" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="40100"/>
-        </decla>
-        <decla idDecla="02003014" nIndDecCor="0" idCont="70001912226" lNumCont="80220048491002" cnNatCont="00" dDatEfFisc="1993-04-27" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="49232"/>
-        </decla>
-        <decla idDecla="02003064" nIndDecCor="0" idCont="70001913015" lNumCont="86018855709178" cnNatCont="00" dDatEfFisc="1993-04-24" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="140827"/>
-        </decla>
-        <decla idDecla="02003114" nIndDecCor="0" idCont="70001913955" lNumCont="86638399427730" cnNatCont="00" dDatEfFisc="1993-04-27" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="20150"/>
-        </decla>
-        <decla idDecla="02003164" nIndDecCor="0" idCont="70001915259" lNumCont="81022072782700" cnNatCont="00" dDatEfFisc="1993-04-29" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="57844"/>
-        </decla>
-        <decla idDecla="02003214" nIndDecCor="0" idCont="70001916095" lNumCont="86185864943730" cnNatCont="00" dDatEfFisc="1993-05-04" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="222493"/>
-        </decla>
-        <decla idDecla="02003264" nIndDecCor="0" idCont="70001917183" lNumCont="86697505941695" cnNatCont="00" dDatEfFisc="1993-05-06" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="147934"/>
-        </decla>
-        <decla idDecla="02003314" nIndDecCor="0" idCont="70001918390" lNumCont="82903611345780" cnNatCont="00" dDatEfFisc="1993-05-05" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="69644"/>
-        </decla>
-        <decla idDecla="02003364" nIndDecCor="0" idCont="70001919857" lNumCont="88265086140424" cnNatCont="00" dDatEfFisc="1993-05-06" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="92871"/>
-        </decla>
-        <decla idDecla="02003414" nIndDecCor="0" idCont="70001920816" lNumCont="81020904843700" cnNatCont="00" dDatEfFisc="1993-05-13" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="78396"/>
-        </decla>
-        <decla idDecla="02003464" nIndDecCor="0" idCont="70001921310" lNumCont="86682008578780" cnNatCont="00" dDatEfFisc="1993-05-07" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="22291"/>
-        </decla>
-        <decla idDecla="02003514" nIndDecCor="0" idCont="70001922413" lNumCont="82905010586780" cnNatCont="00" dDatEfFisc="1993-05-15" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="51890"/>
-        </decla>
-        <decla idDecla="02003564" nIndDecCor="0" idCont="70001923091" lNumCont="82903972216780" cnNatCont="00" dDatEfFisc="1993-05-15" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="31464"/>
-        </decla>
-        <decla idDecla="02003614" nIndDecCor="0" idCont="70001923796" lNumCont="86013067204578" cnNatCont="00" dDatEfFisc="1993-05-19" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="39909"/>
-        </decla>
-        <decla idDecla="02003664" nIndDecCor="0" idCont="70001924579" lNumCont="83602852098750" cnNatCont="00" dDatEfFisc="1993-05-17" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="48716"/>
-        </decla>
-        <decla idDecla="02003714" nIndDecCor="0" idCont="70001925775" lNumCont="82232055663780" cnNatCont="00" dDatEfFisc="1993-05-25" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="22012"/>
-        </decla>
-        <decla idDecla="02003764" nIndDecCor="0" idCont="70001926628" lNumCont="86772815748003" cnNatCont="00" dDatEfFisc="1993-05-20" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="36977"/>
-        </decla>
-        <decla idDecla="02003814" nIndDecCor="0" idCont="70001927458" lNumCont="86636275500780" cnNatCont="00" dDatEfFisc="1993-05-27" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="10" nVal="40673"/>
-        </decla>
-        <decla idDecla="02003864" nIndDecCor="0" idCont="70001928215" lNumCont="89107352309715" cnNatCont="00" dDatEfFisc="1993-05-25" dDatEvtDec="2023-01-01" dDatConEvt="2023-01-01" cnNatEvtDec="03" cnIndModDeclaBenef="0" cnIndRegAch="0" cnIndRachCont="1">
-            <mtDecla cnNatMontDecla="12" nVal="8361"/>
-        </decla>
-    </contenu>
-</dep>
+ 00:54:28,541 ERROR - caas.fcva.processing.batch.ExportXmlSparkProcess: Error => Le fichier: xxxxxn'est pas valide :schema_reference.4: Failed to read schema document 'file:xxx-V2.0.0.xsd', because 1) could not find the document; 2) the document could not be read; 3) the root element of the document is not <xsd:schema>.
+org.xml.sax.SAXParseException; schema_reference.4: Failed to read schema document 'xxxxxx-V2.0.0.xsd', because 1) could not find the document; 2) the document could not be read; 3) the root element of the document is not <xsd:schema>.
+	at org.apache.xerces.util.ErrorHandlerWrapper.createSAXParseException(Unknown Source)
+	at org.apache.xerces.util.ErrorHandlerWrapper.error(Unknown Source)
+	at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+	at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+	at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+	at org.apache.xerces.impl.xs.traversers.XSDHandler.reportSchemaError(Unknown Source)
+	at org.apache.xerces.impl.xs.traversers.XSDHandler.getSchemaDocument(Unknown Source)
+	at org.apache.xerces.impl.xs.traversers.XSDHandler.parseSchema(Unknown Source)
+	at org.apache.xerces.impl.xs.XMLSchemaLoader.loadSchema(Unknown Source)
+	at org.apache.xerces.impl.xs.XMLSchemaLoader.loadGrammar(Unknown Source)
+	at org.apache.xerces.impl.xs.XMLSchemaLoader.loadGrammar(Unknown Source)
+	at org.apache.xerces.jaxp.validation.XMLSchemaFactory.newSchema(Unknown Source)
+	at javax.xml.validation.SchemaFactory.newSchema(SchemaFactory.java:638)
+	at javax.xml.validation.SchemaFactory.newSchema(SchemaFactory.java:654)
+	at caas.xxxx.processing.batch.ExportXmlSparkProcess.xsdValidation(ExportXmlSparkProcess.java:470)
+	at caas.xxxx.processing.batch.ExportXmlSparkProcess.processData(ExportXmlSparkProcess.java:85)
+	at caas.xxxx.batch.ExportXmlSparkProcessTest.lambda$processData$0(ExportXmlSparkProcessTest.java:87)
+	at java.util.HashMap.forEach(HashMap.java:1288)
+	at caas.xxxx.batch.ExportXmlSparkProcessTest.processData(ExportXmlSparkProcessTest.java:53)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:69)
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater$1.execute(IdeaTestRunner.java:38)
+	at com.intellij.rt.execution.junit.TestsRepeater.repeat(TestsRepeater.java:11)
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35)
+	at com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:232)
+	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:55)
