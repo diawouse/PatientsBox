@@ -1,45 +1,684 @@
- 00:54:28,541 ERROR - caas.fcva.processing.batch.ExportXmlSparkProcess: Error => Le fichier: DPRDS1X.PS.FICOVIE.ANNUEL.CAAR.1.20220412_115838 n'est pas valide :schema_reference.4: Failed to read schema document 'file:/C:/Users/UC6VWH/Mes%20Documents%20locaux/workspace/fcva/j6-usage-fcva/src/main/resources/xsd/ficovie-V2.0.0.xsd', because 1) could not find the document; 2) the document could not be read; 3) the root element of the document is not <xsd:schema>.
-org.xml.sax.SAXParseException; schema_reference.4: Failed to read schema document 'file:/C:/Users/UC6VWH/Mes%20Documents%20locaux/workspace/fcva/j6-usage-fcva/src/main/resources/xsd/ficovie-V2.0.0.xsd', because 1) could not find the document; 2) the document could not be read; 3) the root element of the document is not <xsd:schema>.
-	at org.apache.xerces.util.ErrorHandlerWrapper.createSAXParseException(Unknown Source)
-	at org.apache.xerces.util.ErrorHandlerWrapper.error(Unknown Source)
-	at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
-	at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
-	at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
-	at org.apache.xerces.impl.xs.traversers.XSDHandler.reportSchemaError(Unknown Source)
-	at org.apache.xerces.impl.xs.traversers.XSDHandler.getSchemaDocument(Unknown Source)
-	at org.apache.xerces.impl.xs.traversers.XSDHandler.parseSchema(Unknown Source)
-	at org.apache.xerces.impl.xs.XMLSchemaLoader.loadSchema(Unknown Source)
-	at org.apache.xerces.impl.xs.XMLSchemaLoader.loadGrammar(Unknown Source)
-	at org.apache.xerces.impl.xs.XMLSchemaLoader.loadGrammar(Unknown Source)
-	at org.apache.xerces.jaxp.validation.XMLSchemaFactory.newSchema(Unknown Source)
-	at javax.xml.validation.SchemaFactory.newSchema(SchemaFactory.java:638)
-	at javax.xml.validation.SchemaFactory.newSchema(SchemaFactory.java:654)
-	at caas.fcva.processing.batch.ExportXmlSparkProcess.xsdValidation(ExportXmlSparkProcess.java:470)
-	at caas.fcva.processing.batch.ExportXmlSparkProcess.processData(ExportXmlSparkProcess.java:85)
-	at caas.fcva.batch.ExportXmlSparkProcessTest.lambda$processData$0(ExportXmlSparkProcessTest.java:87)
-	at java.util.HashMap.forEach(HashMap.java:1288)
-	at caas.fcva.batch.ExportXmlSparkProcessTest.processData(ExportXmlSparkProcessTest.java:53)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
-	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
-	at com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:69)
-	at com.intellij.rt.junit.IdeaTestRunner$Repeater$1.execute(IdeaTestRunner.java:38)
-	at com.intellij.rt.execution.junit.TestsRepeater.repeat(TestsRepeater.java:11)
-	at com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35)
-	at com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:232)
-	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:55)
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--	Modifications apportées dans la version 2.0 -->
+<!--  Balise d'entête : version passe de 1.3.6 à 2.0 -->
+<!-- Ajout des indicateurs cnIndInit, cnIndRachCont, cnIndRecAnn dans la déclaration -->
+<!-- Ajout des énumérations correspondantes pour ces 3 nouvels indices -->
+<!-- Enrichissement de l'énumération pour la nature du contrat -->
+<!-- Enrichissement de l'énumération pour la cause de l'événement -->
+<!-- Passade de l'occurence d'un assureur de 2 à indéfini -->
+
+<!--	Modifications apportées dans la version 1.3.6 -->
+<!--  Correction du format du fichier -->
+<!--  Balise d'entête : version passe de 1.3.5 à 1.3.6-->
+
+<!--	Modifications apportées dans la version 1.3.5 -->
+<!--  Balise d'entête : version passe de 1.3.4 à 1.3.5-->
+<!--  En date du 16/02/2016  Attribut idPmo		:  Passage de "\d{9}|W*\d{9}|\d{7}|\w{6}" à "\d{9}|W\d{9}|\d{7}|\w{6}"	-->
+
+<!--	Modifications apportées dans la version 1.3.4 -->
+<!--  Balise d'entête : version passe de 1.3.3 à 1.3.4-->
+<!--  En date du 27/11/2015  Attribut cnCSex				:  Correction xsd:string au lieu de xsd:int	-->
+<!--  En date du 27/11/2015  Attribut cnIndModDeclaBenef	:  Correction xsd:string au lieu de xsd:int	-->
+<!--  En date du 27/11/2015  Attribut cnIndRegAch			:  Correction xsd:string au lieu de xsd:int	-->
+<!--  En date du 27/11/2015  Attribut nIndDecCor			:  Correction xsd:string au lieu de xsd:int	-->
+<!--  En date du 27/11/2015  Attribut cnQualBen				:  Correction xsd:string au lieu de xsd:int	-->
+
+<!--  En date du 25/11/2015  Attribut lRs 	: Ajout dans le pattern du caractère + (avec caractère d'échappement)	-->
+
+<!-- Modifications apportées dans la version 1.3.2 -->
+<!--    Balise d'entête : version passe de 1.0 à 1.3.2 -->
+<!--    Attribut idEmet : pattern passe de ([A-Z]|[a-z]|[0-9]){14} à [0-9]{14} -->
+<!--    Attribut ncComNais : pattern passe de \d{3} à [0-9]{2,3} -->
+
+<!--<xsd:schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified" version="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">-->
+<xsd:schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified" version="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <!--  Identifiant émetteur : Mini maxi 14 en chaine  -->
+    <!--  Identifiant SIRET du prestataire en chiffres  -->
+    <xsd:attribute name="idEmet">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:pattern value="[0-9]{14}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Instruction particulière : Mini 1 et maxi 1000 en chaine  -->
+    <!--  Aucune précision dans le CDC : Mis en alphanumérique avec les caractères : ",-/:;@àâçèéêëîïôùûüÿœæ." et l'espace   -->
+    <!--  Dans la 1.3.3 Récupération des caractères spéciaux par rapport à la version 1.3 -->
+    <xsd:attribute name="lInstrPart">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([A-Z]|[a-z]|[0-9]| |,|-|/|:|;|@|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ|\.|&lt;|&#60;|&gt;|&#62;|&amp;|&#38;|&#39;|&quot;|&#34;|&#35;){1,1000}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Identifiant unique du dépôt : Au format SSSSSSSSS-AAAA-MM-JJ-NNNN  -->
+    <!--  Numéro SIREN sur 9 chiffres + date + numéro séquentiel -->
+    <xsd:attribute name="idDep">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:pattern value="\d{9}-(20[0-9][0-9])-(0[1-9]|1[0-2])-(0[1-9]|([1,2][0-9])|3[0,1])-\d{4}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Nombre de déclarations : Mini 1 et maxi 8 en numérique  -->
+    <!--  Nombre de déclarations >= 0 < 100 000 000  -->
+    <xsd:attribute name="nNbDecla">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:int">
+                <xsd:pattern value="\d{1,8}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Horodatage : Mini et maxi 19 en chaine  -->
+    <!--  Au format AAAA-MM-JJ hh:mm:ss  -->
+    <xsd:attribute name="lHorodatage">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:pattern value="(20[0-9][0-9])-(0[1-9]|1[0-2])-(0[1-9]|([1,2][0-9])|3[0,1]) (([0-1][0-9]|2[0-4])(:([0-5][0-9])){2})"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Identifiant de la déclaration : Mini1 et maxi 8 en chaine   -->
+    <!--  Numéro incrémenté séquentiellement : Mis en numérique  -->
+    <xsd:attribute name="idDecla">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:int">
+                <xsd:pattern value="\d{1,8}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Indice de correction : Mini maxi 1 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="nIndDecCor">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="0"/>
+                <xsd:enumeration value="1"/>
+                <xsd:enumeration value="2"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Identifiant du contrat : Mini 1 et maxi 50 en chaine  -->
+    <!--  En alphanumérique, espace, tiret et /  -->
+    <xsd:attribute name="idCont">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |-|/){1,50}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Numéro de contrat : Mini 1 et maxi 30 en chaine  -->
+    <!--  En alphanumérique, espace, tiret et /  -->
+    <xsd:attribute name="lNumCont">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |-|/){1,30}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Nature du contrat : Mini maxi 2 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnNatCont">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="00"/>
+                <xsd:enumeration value="01"/>
+                <xsd:enumeration value="02"/>
+                <xsd:enumeration value="03"/>
+                <xsd:enumeration value="04"/>
+                <xsd:enumeration value="05"/>
+                <xsd:enumeration value="06"/>
+                <xsd:enumeration value="07"/>
+                <xsd:enumeration value="08"/>
+                <xsd:enumeration value="09"/>
+                <xsd:enumeration value="10"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Date d'effet fiscal : Format AAAA-MM-JJ -->
+    <xsd:attribute name="dDatEfFisc" type="xsd:date"/>
+    <!--  Date de l'évement déclaré : Format AAAA-MM-JJ -->
+    <xsd:attribute name="dDatEvtDec" type="xsd:date"/>
+    <!--  Date de connaissance de l'évènement : Format AAAA-MM-JJ -->
+    <xsd:attribute name="dDatConEvt" type="xsd:date"/>
+    <!--  Nature de l'évènement déclaré : Mini maxi 2 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnNatEvtDec">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="00"/>
+                <xsd:enumeration value="01"/>
+                <xsd:enumeration value="02"/>
+                <xsd:enumeration value="03"/>
+                <xsd:enumeration value="04"/>
+                <xsd:enumeration value="05"/>
+                <xsd:enumeration value="06"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Cause de l'évènement déclaré : Mini maxi 2 en chaine   -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnCausEvt">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="00"/>
+                <xsd:enumeration value="01"/>
+                <xsd:enumeration value="02"/>
+                <xsd:enumeration value="03"/>
+                <xsd:enumeration value="04"/>
+                <xsd:enumeration value="05"/>
+                <xsd:enumeration value="06"/>
+                <xsd:enumeration value="07"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Indicateur du mode de déclaration des bénéficiaires : Mini maxi 1 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnIndModDeclaBenef">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="0"/>
+                <xsd:enumeration value="1"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Indicateur de règlement achevé : Mini maxi 1 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnIndRegAch">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="0"/>
+                <xsd:enumeration value="1"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Indicateur de l'indice d'initialisation : Mini maxi 1 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnIndInit">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="0"/>
+                <xsd:enumeration value="1"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Indicateur de l'indice de caractère rachetable : Mini maxi 1 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnIndRachCont">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="0"/>
+                <xsd:enumeration value="1"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Indicateur de l'indice de reconduction tacite annuelle : Mini maxi 1 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnIndRecAnn">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="0"/>
+                <xsd:enumeration value="1"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Date de l'avenant : Format AAAA-MM-JJ  -->
+    <xsd:attribute name="dDatAve" type="xsd:date"/>
+    <!--  Qualité du bénéficiaire : Mini maxi 2 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnQualBen">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="00"/>
+                <xsd:enumeration value="01"/>
+                <xsd:enumeration value="02"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Raison sociale : Mini 1 et maxi 70 en chaine  -->
+    <!--  Aucune précision dans le CDC : Mis en alphanumérique avec les caractères : ",-/+:;@àâçèéêëîïôùûüÿœæ." et l'espace   -->
+    <!--  Dans la 1.3.3 Récupération des caractères spéciaux par rapport à la version 1.3 -->
+    <xsd:attribute name="lRs">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([A-Z]|[a-z]|[0-9]| |,|-|/|:|\+|;|@|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ|\.|&lt;|&#60;|&gt;|&#62;|&amp;|&#38;|&#39;|&quot;|&#34;|&#35;){1,70}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Identifiant de la personne morale : Mini 9 et maxi 10 en chaine  -->
+    <!--  Soit 9 chiffres pour le SIREN - Soit W suivi de 9 chiffres pour le RAN -->
+    <xsd:attribute name="idPmo">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:pattern value="\d{9}|W\d{9}|\d{7}|\w{6}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Code sexe :  Mini maxi 1 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnCSex">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="1"/>
+                <xsd:enumeration value="2"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Prénom : Mini 1 et maxi 40 en chaine  -->
+    <!--  En alpha avec les caractères : "àâçèéêëîïôùûüÿœæ" et l'espace et l'apostrophe   -->
+    <xsd:attribute name="lPren">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([a-z]|[A-Z]| |-|'|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,40}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Date de naissance : Format AAAA-MM-JJ  -->
+    <!--  Les valeurs à 0000 pour l'année, 00 pour le mois et le jour sont acceptées  -->
+    <xsd:attribute name="dDNais">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:pattern value="\d{4}-(0[0-9]|1[0-2])-(0[0-9]|([1,2][0-9])|3[0,1])"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!-- Date de décès : Format AAAA-MM-JJ  -->
+    <xsd:attribute name="dDDec" type="xsd:date"/>
+    <!--  Code département de naissance : Mini 2 et maxi 3 en chaine  -->
+    <!--  Code INSEE : Mis en alphanumérique -->
+    <xsd:attribute name="ccCDepNais">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:pattern value="\w{2,3}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Code pays de naissance : Mini maxi 5 en numérique  -->
+    <!--  Code INSEE  -->
+    <xsd:attribute name="nCPaysNais">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:int">
+                <xsd:pattern value="\d{5}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!-- Libellé du pays de naissance : Mini 1 et maxi 70 en chaine  -->
+    <!-- En alpha, tiret, espace et apostrophe + "àâçèéêëîïôùûüÿœæ" -->
+    <xsd:attribute name="lLPaysNais">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([a-z]|[A-Z]| |-|'|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,70}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!-- Code commune de naissance : Mini 2 et maxi 3 en chiffres  -->
+    <!--  Code INSEE  -->
+    <xsd:attribute name="nCComNais">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:pattern value="[0-9]{2,3}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Libellé commune de naissance : Mini 1 et maxi 30 en chaine  -->
+    <!--  En alphanumérique, tiret, espace, apostrophe et / et "àâçèéêëîïôùûüÿœæ"  -->
+    <xsd:attribute name="lLComNais">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |'|-|/|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,30}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Nom : Mini 1 et maxi 10 en chaine  -->
+    <!--  En alpha, espace, tiret et apostrophe et "àâçèéêëîïôùûüÿœæ"  -->
+    <xsd:attribute name="lNomPat">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([a-z]|[A-Z]| |-|'|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,100}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Nom d'usage : Mini1 et maxi 100 en chaine  -->
+    <!--  En alpha, espace, tiret et apostrophe et "àâçèéêëîïôùûüÿœæ"  -->
+    <xsd:attribute name="lNomUs">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([a-z]|[A-Z]| |-|'|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,100}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Nature de l'adresse : Mini maxi 2 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnNatAdr">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="00"/>
+                <xsd:enumeration value="01"/>
+                <xsd:enumeration value="02"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Code pays de l'adresse : Mini maxi 5 en numérique  -->
+    <!--  Code INSEE  -->
+    <xsd:attribute name="nCPays">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:int">
+                <xsd:pattern value="\d{5}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Code département de l'adresse : Mini maxi 3 en chaine  -->
+    <!--  Code Fantoir : Mis en alphanumérique  -->
+    <xsd:attribute name="ccCDep">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:pattern value="\w{3}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Code de la commune de l'adresse : mini maxi 3 en numérique  -->
+    <xsd:attribute name="nCCom">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:int">
+                <xsd:pattern value="\d{3}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Code voie de l'adresse : mini 1 et maxi 4 en chaine  -->
+    <!--  Code Fantoir : En alphanumérique  -->
+    <xsd:attribute name="ccCVoie">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:pattern value="\w{1,4}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Numéro d'immeuble : mini 1 et maxi 4 en chaine  -->
+    <!--  En alphanumérique et espace  -->
+    <xsd:attribute name="lNImm">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| ){1,4}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Indice de répétition : mini maxi 1 chaine  -->
+    <!--  En alpha strict  -->
+    <xsd:attribute name="lIRep">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:pattern value="([A-Z]|[a-z])"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Complément d'adresse : mini 1 et maxi 38 en chaine  -->
+    <!--  En alphanumérique, espace, apostrophe, tiret ou / et "àâçèéêëîïôùûüÿœæ" -->
+    <xsd:attribute name="lCplAdr">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |'|-|/|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ|\.|,){1,38}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Code postal : Mini 1 et maxi 10 en chaine  -->
+    <!--  En alphanumérique ou tiret -->
+    <xsd:attribute name="ccCPost">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:pattern value="([a-z]|[A-Z]|[0-9]|-){1,10}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Bureau distributeur : mini 1 maxi 38 en chaine  -->
+    <!--  En alphanumérique, espace, tiret, apostrophe, / et "àâçèéêëîïôùûüÿœæ" -->
+    <xsd:attribute name="lBurDist">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |'|-|/|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,38}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Libellé de la commune : mini 1 maxi 38 en chaine  -->
+    <!--  En alphanumérique, espace, tiret, apostrophe, / et "àâçèéêëîïôùûüÿœæ" -->
+    <xsd:attribute name="lLCom">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |'|-|/|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,38}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!-- Type et libellé de voie : Mini 1 et maxi 38 en chaine  -->
+    <!-- En alphanumérique, espace, apostrophe, tiret et "àâçèéêëîïôùûüÿœæ" -->
+    <xsd:attribute name="lNumEtVoie">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:whiteSpace value="collapse"/>
+                <xsd:pattern value="([a-z]|[A-Z]|[0-9]| |'|-|à|â|ç|è|é|ê|ë|î|ï|ô|ù|û|ü|ÿ|œ|æ){1,38}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Nature du montant du bénéficiaire : Mini maxi 2 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnNatMontBenef">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="00"/>
+                <xsd:enumeration value="01"/>
+                <xsd:enumeration value="02"/>
+                <xsd:enumeration value="03"/>
+                <xsd:enumeration value="04"/>
+                <xsd:enumeration value="05"/>
+                <xsd:enumeration value="06"/>
+                <xsd:enumeration value="07"/>
+                <xsd:enumeration value="08"/>
+                <xsd:enumeration value="09"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Nature du montant de la déclaration : Mini maxi 2 en chaine  -->
+    <!--  Enumération  -->
+    <xsd:attribute name="cnNatMontDecla">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="09"/>
+                <xsd:enumeration value="10"/>
+                <xsd:enumeration value="11"/>
+                <xsd:enumeration value="12"/>
+                <xsd:enumeration value="13"/>
+                <xsd:enumeration value="14"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Valeur du montant : Mini 1 et maxi 10 en numérique  -->
+    <!--  Sans décimale  -->
+    <xsd:attribute name="nVal">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:int">
+                <xsd:pattern value="\d{1,10}"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:attribute>
+    <!--  Personne morale pour souscripteur et bénéficiaire : L'attribut idPmo n'est pas obligatoire  -->
+    <xsd:complexType name="personneMorale">
+        <xsd:attribute ref="lRs" use="required"/>
+        <xsd:attribute ref="idPmo" use="optional"/>
+    </xsd:complexType>
+    <!--  Personne morale pour l'assureur : Les 2 attributs sont obligatoires  -->
+    <xsd:complexType name="personneMoraleAssureur">
+        <xsd:attribute ref="lRs" use="required"/>
+        <xsd:attribute ref="idPmo" use="required"/>
+    </xsd:complexType>
+    <!--  Type Code pays de naissance : Pour le choice entre le code ou le libellé du pays de naissance  -->
+    <xsd:complexType name="paysNaissanceCode">
+        <xsd:attribute ref="nCPaysNais" use="required"/>
+        <xsd:attribute ref="lLPaysNais" use="optional"/>
+    </xsd:complexType>
+    <!--  Type Libellé pays de naissance : Pour le choice entre le code ou le libellé du pays de naissance  -->
+    <xsd:complexType name="paysNaissance">
+        <xsd:attribute ref="nCPaysNais" use="optional"/>
+        <xsd:attribute ref="lLPaysNais" use="optional"/>
+    </xsd:complexType>
+    <!-- Choice entre code ou libellé de la commune de naissance -->
+    <xsd:complexType name="communeNaissance">
+        <xsd:attribute ref="nCComNais" use="optional"/>
+        <xsd:attribute ref="lLComNais" use="optional"/>
+    </xsd:complexType>
+    <!-- Choice entre le nom patronyme ou le nom d'usage -->
+    <xsd:complexType name="nom">
+        <xsd:attribute ref="lNomPat" use="optional"/>
+        <xsd:attribute ref="lNomUs" use="optional"/>
+    </xsd:complexType>
+    <!--  Balise de la personne physique  -->
+    <xsd:complexType name="personnePhysique">
+        <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="nom" type="nom"/>
+            <xsd:element maxOccurs="1" minOccurs="0" name="paysNais" type="paysNaissance"/>
+            <xsd:element maxOccurs="1" minOccurs="0" name="comNais" type="communeNaissance"/>
+        </xsd:sequence>
+        <xsd:attribute ref="cnCSex" use="optional"/>
+        <xsd:attribute ref="lPren" use="optional"/>
+        <xsd:attribute ref="dDNais" use="optional"/>
+        <xsd:attribute ref="dDDec" use="optional"/>
+        <xsd:attribute ref="ccCDepNais" use="optional"/>
+    </xsd:complexType>
+    <!--  Type pour l'adresse codée  -->
+    <xsd:complexType name="adresseCodee">
+        <xsd:attribute ref="cnNatAdr" use="required"/>
+        <xsd:attribute ref="nCPays" use="required"/>
+        <xsd:attribute ref="ccCDep" use="required"/>
+        <xsd:attribute ref="nCCom" use="required"/>
+        <xsd:attribute ref="ccCVoie" use="required"/>
+        <xsd:attribute ref="lNImm" use="optional"/>
+        <xsd:attribute ref="lIRep" use="optional"/>
+        <xsd:attribute ref="lCplAdr" use="optional"/>
+    </xsd:complexType>
+    <!--  Type pour l'adresse non codée  -->
+    <xsd:complexType name="adresseNonCodee">
+        <xsd:attribute ref="cnNatAdr" use="required"/>
+        <xsd:attribute ref="nCPays" use="required"/>
+        <xsd:attribute ref="ccCPost" use="required"/>
+        <xsd:attribute ref="lBurDist" use="optional"/>
+        <xsd:attribute ref="lLCom" use="required"/>
+        <xsd:attribute ref="lCplAdr" use="optional"/>
+        <xsd:attribute ref="lNumEtVoie" use="optional"/>
+    </xsd:complexType>
+    <!-- Choice entre adresse codée et adresse non codée  -->
+    <xsd:complexType name="adresse">
+        <xsd:sequence>
+            <xsd:choice>
+                <xsd:element name="adrC" type="adresseCodee"/>
+                <xsd:element name="adrNC" type="adresseNonCodee"/>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!--  Balise montant du bénéficiaire -->
+    <xsd:complexType name="montantBenef">
+        <xsd:attribute ref="nVal" use="required"/>
+        <xsd:attribute ref="cnNatMontBenef" use="required"/>
+    </xsd:complexType>
+    <!-- Balise montant de la déclaration  -->
+    <xsd:complexType name="montantDecla">
+        <xsd:attribute ref="nVal" use="required"/>
+        <xsd:attribute ref="cnNatMontDecla" use="required"/>
+    </xsd:complexType>
+    <!--  Balise souscripteur : Choice entre personne physique et personne morale  -->
+    <xsd:complexType name="souscripteur">
+        <xsd:sequence>
+            <xsd:choice>
+                <xsd:element name="pPh" type="personnePhysique"/>
+                <xsd:element name="pMo" type="personneMorale"/>
+            </xsd:choice>
+            <xsd:element maxOccurs="3" minOccurs="1" name="adr" type="adresse"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!--  Balise assuré : Choice entre personne physique et personne morale  -->
+    <xsd:complexType name="assure">
+        <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="pPh" type="personnePhysique"/>
+            <xsd:element maxOccurs="3" minOccurs="1" name="adr" type="adresse"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!--  Balise Bénéficiaire : Choice entre personne physique et personne morale  -->
+    <xsd:complexType name="beneficiaire">
+        <xsd:sequence>
+            <xsd:choice>
+                <xsd:element name="pPh" type="personnePhysique"/>
+                <xsd:element name="pMo" type="personneMorale"/>
+            </xsd:choice>
+            <xsd:element maxOccurs="3" minOccurs="0" name="adr" type="adresse"/>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="mtBenef" type="montantBenef"/>
+        </xsd:sequence>
+        <xsd:attribute ref="cnQualBen" use="optional"/>
+    </xsd:complexType>
+    <!--  Balise Assureur  -->
+    <xsd:complexType name="assureur">
+        <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="pMo" type="personneMoraleAssureur"/>
+            <xsd:element maxOccurs="1" minOccurs="1" name="adr" type="adresse"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!--  Balise Déclaration  -->
+    <xsd:complexType name="declaration">
+        <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="mtDecla" type="montantDecla"/>
+        </xsd:sequence>
+        <xsd:attribute ref="idDecla" use="required"/>
+        <xsd:attribute ref="nIndDecCor" use="required"/>
+        <xsd:attribute ref="idCont" use="required"/>
+        <xsd:attribute ref="lNumCont" use="required"/>
+        <xsd:attribute ref="cnNatCont" use="required"/>
+        <xsd:attribute ref="dDatEfFisc" use="required"/>
+        <xsd:attribute ref="dDatEvtDec" use="required"/>
+        <xsd:attribute ref="dDatConEvt" use="required"/>
+        <xsd:attribute ref="cnNatEvtDec" use="required"/>
+        <xsd:attribute ref="cnCausEvt" use="optional"/>
+        <xsd:attribute ref="cnIndModDeclaBenef" use="required"/>
+        <xsd:attribute ref="cnIndRegAch" use="required"/>
+        <xsd:attribute ref="cnIndInit" use="optional"/>
+        <xsd:attribute ref="cnIndRachCont" use="optional"/>
+        <xsd:attribute ref="cnIndRecAnn" use="optional"/>
+        <xsd:attribute ref="dDatAve" use="optional"/>
+    </xsd:complexType>
+    <!--  Balise Entête  -->
+    <xsd:complexType name="entete">
+        <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="assureur" type="assureur"/>
+        </xsd:sequence>
+        <xsd:attribute ref="idEmet" use="required"/>
+        <xsd:attribute ref="lInstrPart" use="optional"/>
+        <xsd:attribute ref="idDep" use="required"/>
+        <xsd:attribute ref="nNbDecla" use="required"/>
+        <xsd:attribute ref="lHorodatage" use="required"/>
+    </xsd:complexType>
+    <!--  Balise Contenu  -->
+    <xsd:complexType name="contenu">
+        <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="decla" type="declaration"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!--  Dalise Dep  -->
+    <xsd:element name="dep">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="1" minOccurs="1" name="entete" type="entete"/>
+                <xsd:element maxOccurs="1" minOccurs="1" name="contenu" type="contenu"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
