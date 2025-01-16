@@ -1,105 +1,149 @@
-public static Dataset<Row> processData(Map<String, Dataset<Row>> mapInputDatasets) throws Exception {
-    LOGGER.info("Start processData");
+peux tu ameliorer le code java ci-dessous en tenant compte des messages : 
+en tenant compte du message ci-dessou :
+Refactor this method to reduce its Cognitive Complexity from 33 to the 15 allowed.
 
-    List<HashMap<String, String>> listAno = new ArrayList<>();
+private static void generateContentXmlPersEnt(Dataset<Row> contentDs) {
+		StructType structType = getSchemaForContentXml("PM");
+		contentDs = contentDs
+				.filter(col(UsageEAIC.J6_TW_EAI_CDC_DCl.CT_PEO).notEqual("PP"))
+				.select(Utils.replaceEmptyColsWithNull(contentDs.columns()));
 
-    Dataset<Row> eaicEvtDs = Utils.loadMaxParamAndFilterFlAct(
-            mapInputDatasets.get(UsageRSRG.CATALOG_RSRG.J6_TR_EAI_CDC_EVT_TABLE_NAME),
-            UsageRSRG.FIELD_LIST_KEYS_EVT,
-            UsageRSRG.J6_TR_EAI_CDC_EVT.DT_MAJ_PAR, true);
+		Dataset<Row> transformedDs = contentDs.map((MapFunction<Row, Row>) (Row row) -> {
+			Row idfRow = RowFactory.create(
+					row.getString(row.fieldIndex(CD_RSD_FIS_ENT)),
+					row.getString(row.fieldIndex(NO_NIF_ENT)),
+					row.getString(row.fieldIndex(CN_IFO_ABS_ENT))
+			);
+			Row idf1Row = RowFactory.create(
+					row.getString(row.fieldIndex(CD_RSD_FIS_CNT_001)),
+					row.getString(row.fieldIndex(NO_NIF_PEO_CNT_001)),
+					row.getString(row.fieldIndex(CN_IFO_ABS_CNT_001))
+			);
 
-    Dataset<Row> vadZoDs = mapInputDatasets.get(UsageEAIC.CATALOG_EAIC.J6_TA_EAI_CDC_VAD_TABLE_NAME);
-    Dataset<Row> j6TsEaic = mapInputDatasets.get(UsageEAIC.CATALOG_EAIC.J6_TS_EAI_CDC_TABLE_NAME);
+			Row idf2Row = RowFactory.create(
+					row.getString(row.fieldIndex(CD_RSD_FIS_CNT_002)),
+					row.getString(row.fieldIndex(NO_NIF_PEO_CNT_002)),
+					row.getString(row.fieldIndex(CN_IFO_ABS_CNT_002))
+			);
 
-    Timestamp lastStep2ExecutionDate = TrackingUtils.getDateLastExecProcess(
-            j6TsEaic, GeneralConstants.PROCESS_NUMBER.J6_TA_EAI_CDC_VAD);
+			Row idf3Row = RowFactory.create(
+					row.getString(row.fieldIndex(CD_RSD_FIS_CNT_003)),
+					row.getString(row.fieldIndex(NO_NIF_PEO_CNT_003)),
+					row.getString(row.fieldIndex(CN_IFO_ABS_CNT_003))
+			);
 
-    Dataset<Row> vadZbDs = Utils.filterDataSourceForUsage(
-            mapInputDatasets.get(SourceRSRG.CATALOG_RSRG.DD_TA_EAI_CDC_VAD_TABLE_NAME), lastStep2ExecutionDate);
-    vadZbDs = Utils.loadLastMaxVersion(vadZbDs, UsageEAIC.J6_TA_EAI_CDC_VAD.KEYS_VAD, UsageEAIC.J6_TA_EAI_CDC_VAD.ING_TMS_INGESTION);
+			Row idf4Row = RowFactory.create(
+					row.getString(row.fieldIndex(CD_RSD_FIS_CNT_004)),
+					row.getString(row.fieldIndex(NO_NIF_PEO_CNT_004)),
+					row.getString(row.fieldIndex(CN_IFO_ABS_CNT_004))
+			);
 
-    TrackingUtils.writeTrackInfo(vadZbDs, GeneralConstants.EVT_NUMBER.LECTURE, 
-            UsageEAIC.CATALOG_EAIC.J6_TA_EAI_CDC_VAD_TABLE_NAME, GeneralConstants.PROCESS_NUMBER.J6_TA_EAI_CDC_VAD);
 
-    if (Utils.isDatasetEmpty(vadZbDs)) {
-        logAndTrackError(eaicEvtDs, VAD_01, "La table source est vide.", listAno);
-        return null;
-    }
+			Row cnt1Row = RowFactory.create(
+					row.getString(row.fieldIndex(LN_PNY_PEO_CNT_001)),
+					row.getString(row.fieldIndex(LP_PEO_CNT_001)),
+					row.getString(row.fieldIndex(DN_PEO_CNT_001)),
+					row.getString(row.fieldIndex(AV_NAI_PEO_CNT_001)),
+					row.getString(row.fieldIndex(AY_NAI_PEO_CNT_001)),
+					row.getString(row.fieldIndex(AL_RUE_PEO_CNT_001)),
+					row.getString(row.fieldIndex(AL_BAT_PEO_CNT_001)),
+					listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_001))) ? row.getString(row.fieldIndex(AC_PEO_CNT_001)) : null,
+					!listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_001))) ? row.getString(row.fieldIndex(CD_DTB_ETG_CNT_001)) : null,
+					row.getString(row.fieldIndex(AL_CMN_PEO_CNT_001)),
+					row.getString(row.fieldIndex(AY_ADR_PEO_CNT_001)),
+					row.getString(row.fieldIndex(LN_UTI_PEO_CNT_001)),
+					idf1Row
+			);
 
-    validateDatasetColumns(vadZbDs, eaicEvtDs, listAno);
+			Row cnt2Row = RowFactory.create(
+					row.getString(row.fieldIndex(LN_PNY_PEO_CNT_002)),
+					row.getString(row.fieldIndex(LP_PEO_CNT_002)),
+					row.getString(row.fieldIndex(DN_PEO_CNT_002)),
+					row.getString(row.fieldIndex(AV_NAI_PEO_CNT_002)),
+					row.getString(row.fieldIndex(AY_NAI_PEO_CNT_002)),
+					row.getString(row.fieldIndex(AL_RUE_PEO_CNT_002)),
+					row.getString(row.fieldIndex(AL_BAT_PEO_CNT_002)),
+					listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_002))) ? row.getString(row.fieldIndex(AC_PEO_CNT_002)) : null,
+					!listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_002))) ? row.getString(row.fieldIndex(CD_DTB_ETG_CNT_002)) : null,
+					row.getString(row.fieldIndex(AL_CMN_PEO_CNT_002)),
+					row.getString(row.fieldIndex(AY_ADR_PEO_CNT_002)),
+					row.getString(row.fieldIndex(LN_UTI_PEO_CNT_002)),
+					idf2Row
+			);
 
-    if (!Utils.isDatasetEmpty(vadZbDs) && !Utils.isDatasetEmpty(vadZoDs)) {
-        validateDatesAndVersions(vadZbDs, vadZoDs, eaicEvtDs, listAno);
-    }
+			Row cnt3Row = RowFactory.create(
+					row.getString(row.fieldIndex(LN_PNY_PEO_CNT_003)),
+					row.getString(row.fieldIndex(LP_PEO_CNT_003)),
+					row.getString(row.fieldIndex(DN_PEO_CNT_003)),
+					row.getString(row.fieldIndex(AV_NAI_PEO_CNT_003)),
+					row.getString(row.fieldIndex(AY_NAI_PEO_CNT_003)),
+					row.getString(row.fieldIndex(AL_RUE_PEO_CNT_003)),
+					row.getString(row.fieldIndex(AL_BAT_PEO_CNT_003)),
+					row.getString(row.fieldIndex(AC_PEO_CNT_003)),
+					listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_003))) ? row.getString(row.fieldIndex(AC_PEO_CNT_003)) : null,
+					!listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_003))) ? row.getString(row.fieldIndex(CD_DTB_ETG_CNT_003)) : null,
+					row.getString(row.fieldIndex(AL_CMN_PEO_CNT_003)),
+					row.getString(row.fieldIndex(AY_ADR_PEO_CNT_003)),
+					row.getString(row.fieldIndex(LN_UTI_PEO_CNT_003)),
+					idf3Row
+			);
 
-    if (listAno.isEmpty()) {
-        TrackingUtils.writeTrackInfo(vadZbDs, GeneralConstants.EVT_NUMBER.ECRITURE, 
-                UsageEAIC.CATALOG_EAIC.J6_TA_EAI_CDC_VAD_TABLE_NAME, GeneralConstants.PROCESS_NUMBER.J6_TA_EAI_CDC_VAD);
-        LOGGER.info("End processData");
-        return vadZbDs;
-    } else {
-        trackBlockingIssues(listAno);
-        LOGGER.info("End processData");
-        return null;
-    }
-}
+			Row cnt4Row = RowFactory.create(
+					row.getString(row.fieldIndex(LN_PNY_PEO_CNT_004)),
+					row.getString(row.fieldIndex(LP_PEO_CNT_004)),
+					row.getDate(row.fieldIndex(DN_PEO_CNT_004)),
+					row.getString(row.fieldIndex(AV_NAI_PEO_CNT_004)),
+					row.getString(row.fieldIndex(AY_NAI_PEO_CNT_004)),
+					row.getString(row.fieldIndex(AL_RUE_PEO_CNT_004)),
+					row.getString(row.fieldIndex(AL_BAT_PEO_CNT_004)),
+					listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_004))) ? row.getString(row.fieldIndex(AC_PEO_CNT_004)) : null,
+					!listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_004))) ? row.getString(row.fieldIndex(CD_DTB_ETG_CNT_004)) : null,
+					row.getString(row.fieldIndex(AL_CMN_PEO_CNT_004)),
+					row.getString(row.fieldIndex(AY_ADR_PEO_CNT_004)),
+					row.getString(row.fieldIndex(LN_UTI_PEO_CNT_004)),
+					idf4Row
+			);
 
-private static void validateDatasetColumns(Dataset<Row> vadZbDs, Dataset<Row> eaicEvtDs, List<HashMap<String, String>> listAno) {
-    checkAndAddAnomaly(vadZbDs, eaicEvtDs, listAno, 
-            col(UsageEAIC.J6_TA_EAI_CDC_VAD.CD_VAD).isin("OK", "KO").not(), VAD_02);
+			Row[] cntValues = new Row[]{
+					row.getInt(row.fieldIndex(QT_CNT)) >= 1 && "02".equals(row.getString(row.fieldIndex(CD_ACV_PSV_ENT))) ? cnt1Row : null,
+					row.getInt(row.fieldIndex(QT_CNT)) >= 2 && "02".equals(row.getString(row.fieldIndex(CD_ACV_PSV_ENT))) ? cnt2Row : null,
+					row.getInt(row.fieldIndex(QT_CNT)) >= 3 && "02".equals(row.getString(row.fieldIndex(CD_ACV_PSV_ENT))) ? cnt3Row : null,
+					row.getInt(row.fieldIndex(QT_CNT)) >= 4 && "02".equals(row.getString(row.fieldIndex(CD_ACV_PSV_ENT))) ? cnt4Row : null,
+			};
 
-    checkAndAddAnomaly(vadZbDs, eaicEvtDs, listAno, 
-            col(UsageEAIC.J6_TA_EAI_CDC_VAD.NO_VER_PAR).equalTo(EMPTY_STRING).or(col(UsageEAIC.J6_TA_EAI_CDC_VAD.NO_VER_PAR).isNull()), VAD_03);
+			Row cptRow = RowFactory.create(
+					row.getString(row.fieldIndex(NO_IBA_CPT)),
+					row.getString(row.fieldIndex(CD_CAR_NMR_CLI_CPT)),
+					Utils.reformatDate(row.getDate(row.fieldIndex(DA_ENV_PRE_DMD_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+					Utils.reformatDate(row.getDate(row.fieldIndex(DA_RPN_PRE_DMD_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+					Utils.reformatDate(row.getDate(row.fieldIndex(DA_ENV_REL_DMD_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+					Utils.reformatDate(row.getDate(row.fieldIndex(DA_RPN_REL_DMD_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+					Utils.reformatDate(row.getDate(row.fieldIndex(DA_RGN_STA_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+					!row.isNullAt(row.fieldIndex(CN_RGN_CPT)) ? String.valueOf(row.getInt(row.fieldIndex(CN_RGN_CPT))) : null,
+					Utils.reformatDate(row.getDate(row.fieldIndex(DA_ANE_CNA_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+					Utils.reformatDate(row.getDate(row.fieldIndex(DF_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+					cntValues
+			);
+			return RowFactory.create(
+					row.getString(row.fieldIndex(LL_ENT)),
+					row.getString(row.fieldIndex(LL_RAI_SOC_ENT)),
+					row.getString(row.fieldIndex(NO_SIR_ENT)),
+					row.getString(row.fieldIndex(AL_RUE_ENT)),
+					row.getString(row.fieldIndex(AL_BAT_ENT)),
+					row.getString(row.fieldIndex(AC_ENT)),
+					row.getString(row.fieldIndex(CD_DTB_ETG_ENT)),
+					row.getString(row.fieldIndex(AL_CMN_ENT)),
+					row.getString(row.fieldIndex(AY_ADR_ENT)),
+					row.getString(row.fieldIndex(CD_ACV_PSV_ENT)),
+					row.getInt(row.fieldIndex(QT_CNT)) == 0 ? idfRow : null,
+					cptRow
+			);
+		}, RowEncoder.apply(structType));
 
-    checkAndAddAnomaly(vadZbDs, eaicEvtDs, listAno, 
-            col(UsageEAIC.J6_TA_EAI_CDC_VAD.DT_MAJ_PAR).equalTo(EMPTY_STRING).or(col(UsageEAIC.J6_TA_EAI_CDC_VAD.DT_MAJ_PAR).isNull()), VAD_04);
-}
+		try {
+			generateXmlFile(transformedDs, ENT, "CONTENT_ENT_FILE");
+		} catch (Exception e) {
+			LOGGER.error("Error when generate content XML :" + e.getMessage());
+		}
 
-private static void validateDatesAndVersions(Dataset<Row> vadZbDs, Dataset<Row> vadZoDs, Dataset<Row> eaicEvtDs, List<HashMap<String, String>> listAno) {
-    Date dateZb = vadZbDs.select(col(UsageEAIC.J6_TA_EAI_CDC_VAD.DT_MAJ_PAR)).first().getDate(0);
-    Date dateZo = vadZoDs.select(max(col(UsageEAIC.J6_TA_EAI_CDC_VAD.DT_MAJ_PAR))).first().getDate(0);
-
-    if (dateZb != null && dateZo.after(dateZb)) {
-        addAnomaly(eaicEvtDs, listAno, VAD_05);
-    } else if (dateZb == null) {
-        addAnomaly(eaicEvtDs, listAno, VAD_05);
-    }
-
-    int noVerParZb = vadZbDs.withColumn("no_ver",
-            when(col(UsageEAIC.J6_TA_EAI_CDC_VAD.NO_VER_PAR).isNull(), lit(-1))
-                    .otherwise(col(UsageEAIC.J6_TA_EAI_CDC_VAD.NO_VER_PAR)))
-            .select("no_ver").first().getInt(0);
-
-    int noVerParZo = vadZoDs.select(UsageEAIC.J6_TA_EAI_CDC_VAD.NO_VER_PAR).first().getInt(0);
-
-    if (noVerParZb < noVerParZo) {
-        addAnomaly(eaicEvtDs, listAno, VAD_06);
-    } else if (noVerParZb == noVerParZo) {
-        addAnomaly(eaicEvtDs, listAno, VAD_07);
-    }
-}
-
-private static void checkAndAddAnomaly(Dataset<Row> dataset, Dataset<Row> eaicEvtDs, List<HashMap<String, String>> listAno, Column condition, String anomalyCode) {
-    if (dataset.filter(condition).limit(1).count() != 0) {
-        addAnomaly(eaicEvtDs, listAno, anomalyCode);
-    }
-}
-
-private static void addAnomaly(Dataset<Row> eaicEvtDs, List<HashMap<String, String>> listAno, String anomalyCode) {
-    HashMap<String, String> mapAno = new HashMap<>();
-    mapAno.put(Tracking.LL_ANO, Utils.getDescAno(eaicEvtDs, anomalyCode));
-    mapAno.put(Tracking.CD_ANO, anomalyCode);
-    listAno.add(mapAno);
-}
-
-private static void logAndTrackError(Dataset<Row> eaicEvtDs, String anomalyCode, String errorMessage, List<HashMap<String, String>> listAno) {
-    LOGGER.error(errorMessage);
-    addAnomaly(eaicEvtDs, listAno, anomalyCode);
-    Tracking.trackInfo(GeneralConstants.PROCESS_NUMBER.J6_TA_EAI_CDC_VAD, GeneralConstants.EVT_NUMBER.CONTROLE, listAno.get(0));
-}
-
-private static void trackBlockingIssues(List<HashMap<String, String>> listAno) {
-    for (HashMap<String, String> ano : listAno) {
-        Tracking.trackInfo(GeneralConstants.PROCESS_NUMBER.J6_TA_EAI_CDC_VAD, GeneralConstants.EVT_NUMBER.CONTROLE_BLOQUANT, ano);
-    }
-}
+	}
