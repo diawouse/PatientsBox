@@ -1,157 +1,106 @@
-Bien sûr, voici un exemple de configuration de multi-job batch avec Spring Boot:
+peux tu ameliorer le code java ci-dessous en tenant compte des messages : 
+en tenant compte du message ci-dessou :
+Refactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.
 
-Supposons que vous avez trois tâches de traitement de données à exécuter en batch: TaskA, TaskB et TaskC. Vous pouvez créer une classe de configuration de batch qui définit les trois jobs:
+	public static Dataset<Row> processData(Map<String, Dataset<Row>> mapInputDatasets) throws Exception {
+		LOGGER.info("Start processData");
+		List<HashMap<String, String>> listAno = new ArrayList<>();
 
-@Configuration
-@EnableBatchProcessing
-public class BatchConfig {
+		Dataset<Row> eaicEvtDs = Utils.loadMaxParamAndFilterFlAct(
+				mapInputDatasets.get(UsageRSRG.CATALOG_RSRG.J6_TR_EAI_CDC_EVT_TABLE_NAME),
+				UsageRSRG.FIELD_LIST_KEYS_EVT,
+				UsageRSRG.J6_TR_EAI_CDC_EVT.DT_MAJ_PAR,true);
 
-    @Autowired
-    private JobBuilderFactory jobBuilderFactory;
+		Dataset<Row> vadZoDs = mapInputDatasets.get(UsageEAIC.CATALOG_EAIC.J6_TA_EAI_CDC_VAD_TABLE_NAME);
+		Dataset<Row> j6TsEaic = mapInputDatasets.get(UsageEAIC.CATALOG_EAIC.J6_TS_EAI_CDC_TABLE_NAME);
 
-    @Autowired
-    private StepBuilderFactory stepBuilderFactory;
+		Timestamp lastStep2ExecutionDate = TrackingUtils.getDateLastExecProcess(j6TsEaic, GeneralConstants.PROCESS_NUMBER.J6_TA_EAI_CDC_VAD);
 
-    @Bean
-    public Job taskAJob() {
-        return jobBuilderFactory.get("taskAJob")
-                .incrementer(new RunIdIncrementer())
-                .flow(taskAStep())
-                .end()
-                .build();
-    }
+		Dataset<Row> vadZbDs = Utils.filterDataSourceForUsage(mapInputDatasets.get(SourceRSRG.CATALOG_RSRG.DD_TA_EAI_CDC_VAD_TABLE_NAME),lastStep2ExecutionDate);
+		vadZbDs = Utils.loadLastMaxVersion(vadZbDs, UsageEAIC.J6_TA_EAI_CDC_VAD.KEYS_VAD, UsageEAIC.J6_TA_EAI_CDC_VAD.ING_TMS_INGESTION);
 
-    @Bean
-    public Job taskBJob() {
-        return jobBuilderFactory.get("taskBJob")
-                .incrementer(new RunIdIncrementer())
-                .flow(taskBStep())
-                .end()
-                .build();
-    }
+		TrackingUtils.writeTrackInfo(vadZbDs, GeneralConstants.EVT_NUMBER.LECTURE, UsageEAIC.CATALOG_EAIC.J6_TA_EAI_CDC_VAD_TABLE_NAME, GeneralConstants.PROCESS_NUMBER.J6_TA_EAI_CDC_VAD);
 
-    @Bean
-    public Job taskCJob() {
-        return jobBuilderFactory.get("taskCJob")
-                .incrementer(new RunIdIncrementer())
-                .flow(taskCStep())
-                .end()
-                .build();
-    }
+		if (Utils.isDatasetEmpty(vadZbDs)) {
+			LOGGER.error("La table source " + SourceRSRG.CATALOG_RSRG.DD_TA_EAI_CDC_VAD_TABLE_NAME + " est vide.");
+			HashMap<String, String> mapAno = new HashMap<>();
+			mapAno.put(Tracking.LL_ANO, Utils.getDescAno(eaicEvtDs, VAD_01));
+			mapAno.put(Tracking.CD_ANO, VAD_01);
+			Tracking.trackInfo(GeneralConstants.PROCESS_NUMBER.J6_TA_EAI_CDC_VAD, GeneralConstants.EVT_NUMBER.CONTROLE, mapAno);
+			return null;
+		}
 
-    @Bean
-    public Step taskAStep() {
-        return stepBuilderFactory.get("taskAStep")
-                .tasklet(taskATasklet())
-                .build();
-    }
+		if (vadZbDs.filter(not(col(UsageEAIC.J6_TA_EAI_CDC_VAD.CD_VAD).isin("OK", "KO"))).limit(1).count() != 0) {
+			HashMap<String, String> mapAno = new HashMap<>();
+			mapAno.put(Tracking.LL_ANO, Utils.getDescAno(eaicEvtDs, VAD_02));
+			mapAno.put(Tracking.CD_ANO, VAD_02);
+			listAno.add(mapAno);
+		}
 
-    @Bean
-    public Step taskBStep() {
-        return stepBuilderFactory.get("taskBStep")
-                .tasklet(taskBTasklet())
-                .build();
-    }
+		if (vadZbDs.filter(col(UsageEAIC.J6_TA_EAI_CDC_VAD.NO_VER_PAR).equalTo(EMPTY_STRING).or(col(UsageEAIC.J6_TA_EAI_CDC_VAD.NO_VER_PAR).isNull())).limit(1).count() != 0) {
+			HashMap<String, String> mapAno = new HashMap<>();
+			mapAno.put(Tracking.LL_ANO, Utils.getDescAno(eaicEvtDs, VAD_03));
+			mapAno.put(Tracking.CD_ANO, VAD_03);
+			listAno.add(mapAno);
+		}
 
-    @Bean
-    public Step taskCStep() {
-        return stepBuilderFactory.get("taskCStep")
-                .tasklet(taskCTasklet())
-                .build();
-    }
+		if (vadZbDs.filter(col(UsageEAIC.J6_TA_EAI_CDC_VAD.DT_MAJ_PAR).equalTo(EMPTY_STRING).or(col(UsageEAIC.J6_TA_EAI_CDC_VAD.DT_MAJ_PAR).isNull())).limit(1).count() != 0) {
+			HashMap<String, String> mapAno = new HashMap<>();
+			mapAno.put(Tracking.LL_ANO, Utils.getDescAno(eaicEvtDs, VAD_04));
+			mapAno.put(Tracking.CD_ANO, VAD_04);
+			listAno.add(mapAno);
+		}
 
-    @Bean
-    public Tasklet taskATasklet() {
-        return new TaskATasklet();
-    }
+		if (!Utils.isDatasetEmpty(vadZbDs) && !Utils.isDatasetEmpty(vadZoDs)) {
+			Date dateZb = vadZbDs.select(col(UsageEAIC.J6_TA_EAI_CDC_VAD.DT_MAJ_PAR)).first().getDate(0);
+			Date dateZo = vadZoDs.select(max(col(UsageEAIC.J6_TA_EAI_CDC_VAD.DT_MAJ_PAR))).first().getDate(0);
 
-    @Bean
-    public Tasklet taskBTasklet() {
-        return new TaskBTasklet();
-    }
-
-    @Bean
-    public Tasklet taskCTasklet() {
-        return new TaskCTasklet();
-    }
-}
-
-
-Dans cet exemple, chaque tâche est définie en tant que Job, qui contient un seul Step exécutant un Tasklet. Vous pouvez créer des Tasklet personnalisées pour chaque tâche en implémentant l'interface Tasklet.
-
-Ensuite, vous pouvez démarrer tous les jobs à partir de la méthode main de votre classe principale:
-
-@SpringBootApplication
-public class BatchApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(BatchApplication.class, args);
-    }
-
-    @Autowired
-    private JobLauncher jobLauncher;
-
-    @Autowired
-    private Job taskAJob;
-
-    @Autowired
-    private Job taskBJob;
-
-    @Autowired
-    private Job taskCJob;
-
-    @Bean
-    public CommandLineRunner run() {
-        return args -> {
-            jobLauncher.run(taskAJob, new JobParametersBuilder().toJobParameters());
-            jobLauncher.run(taskBJob, new JobParametersBuilder().toJobParameters());
-            jobLauncher.run(taskCJob, new JobParametersBuilder().toJobParameters());
-        };
-    }
-}
-
-Dans cet exemple, la méthode run est appelée lorsque l'application démarre, elle lance chaque job avec un nouveau JobParameters à chaque fois. Vous pouvez également planifier l'exécution des jobs à l'aide de @Scheduled ou de toute autre bibliothèque de planification.
-
-C'est un exemple très simple pour vous donner une idée de la configuration d'un multi-job batch avec Spring Boot. Vous pouvez bien sûr
-
-
-		List<DetailOperations> OpeToUpdate = new ArrayList<DetailOperations>();
-			for(DetailOperations one : detailOps) {
-				for(DetailOperations two : detailOpsFromDB) {
-					if(one.getId_operation()==two.getId_operation()  && two.getType_ope().equals(one.getType_ope())
-							&& two.getOld_iban_client_cdn().equals(one.getOld_iban_client_cdn())) {
-						OpeToUpdate.add(one);
-					}
+			if (dateZb != null) {
+				if (dateZo.after(dateZb)) {
+					HashMap<String, String> mapAno = new HashMap<>();
+					mapAno.put(Tracking.LL_ANO, Utils.getDescAno(eaicEvtDs, VAD_05));
+					mapAno.put(Tracking.CD_ANO, VAD_05);
+					listAno.add(mapAno);
 				}
+			} else {
+				HashMap<String, String> mapAno = new HashMap<>();
+				mapAno.put(Tracking.LL_ANO, Utils.getDescAno(eaicEvtDs, VAD_05));
+				mapAno.put(Tracking.CD_ANO, VAD_05);
+				listAno.add(mapAno);
 			}
 
-			/*List<DetailOperations> OpeToInsert = detailOps.stream().filter(two -> OpeToUpdate.stream()
-							.anyMatch(one -> !(one.getId_do()==two.getId_do() && two.getType_ope().equals(one.getType_ope())
-									&& two.getOld_iban_client_cdn().equals(one.getOld_iban_client_cdn()))))
-					.collect(Collectors.toList());*/
+			int noVerParZb = vadZbDs.withColumn("no_ver",
+					when(col(UsageEAIC.J6_TA_EAI_CDC_VAD.NO_VER_PAR).isNull(), lit(-1))
+							.otherwise(col(UsageEAIC.J6_TA_EAI_CDC_VAD.NO_VER_PAR))
+			).select("no_ver").first().getInt(0);
 
-			List<DetailOperations> OpeToInsert = new ArrayList<DetailOperations>();
-			for(DetailOperations one : detailOps) {
-				for(DetailOperations two : detailOpsFromDB) {
-					if(!(one.getId_operation()==two.getId_operation()  && two.getType_ope().equals(one.getType_ope())
-							&& two.getOld_iban_client_cdn().equals(one.getOld_iban_client_cdn()))) {
-						OpeToInsert.add(one);
-					}
-				}
+			int noVerParZo = vadZoDs.select(UsageEAIC.J6_TA_EAI_CDC_VAD.NO_VER_PAR).first().getInt(0);
+
+			if (noVerParZb < noVerParZo) {
+				HashMap<String, String> mapAno = new HashMap<>();
+				mapAno.put(Tracking.LL_ANO, Utils.getDescAno(eaicEvtDs, VAD_06));
+				mapAno.put(Tracking.CD_ANO, VAD_06);
+				listAno.add(mapAno);
 			}
 
+			if (noVerParZb == noVerParZo) {
+				HashMap<String, String> mapAno = new HashMap<>();
+				mapAno.put(Tracking.LL_ANO, Utils.getDescAno(eaicEvtDs, VAD_07));
+				mapAno.put(Tracking.CD_ANO, VAD_07);
+				listAno.add(mapAno);
+			}
+		}
+		if (listAno.isEmpty()) {
+			TrackingUtils.writeTrackInfo(vadZbDs, GeneralConstants.EVT_NUMBER.ECRITURE, UsageEAIC.CATALOG_EAIC.J6_TA_EAI_CDC_VAD_TABLE_NAME, GeneralConstants.PROCESS_NUMBER.J6_TA_EAI_CDC_VAD);
+			LOGGER.info("End processData");
+			return vadZbDs;
+		} else {
+			for (HashMap<String, String> ano : listAno) {
+				Tracking.trackInfo(GeneralConstants.PROCESS_NUMBER.J6_TA_EAI_CDC_VAD, GeneralConstants.EVT_NUMBER.CONTROLE_BLOQUANT, ano);
+			}
+			LOGGER.info("End processData");
+			return null;
+		}
 
-Set<DetailOperations> detailOpsFromDBSet = new HashSet<>(detailOpsFromDB);
-List<DetailOperations> OpeToUpdate = detailOps.parallelStream()
-        .filter(one -> detailOpsFromDBSet.parallelStream()
-                .anyMatch(two -> one.getId_operation() == two.getId_operation() && 
-                        two.getType_ope().equals(one.getType_ope()) && 
-                        two.getOld_iban_client_cdn().equals(one.getOld_iban_client_cdn())))
-        .collect(Collectors.toList());
 
-List<DetailOperations> OpeToInsert = detailOps.parallelStream()
-        .filter(one -> detailOpsFromDBSet.parallelStream()
-                .noneMatch(two -> one.getId_operation() == two.getId_operation() && 
-                        two.getType_ope().equals(one.getType_ope()) && 
-                        two.getOld_iban_client_cdn().equals(one.getOld_iban_client_cdn())))
-        .collect(Collectors.toList());
+	}
