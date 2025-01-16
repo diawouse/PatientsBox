@@ -1,149 +1,113 @@
-peux tu ameliorer le code java ci-dessous en tenant compte des messages : 
-en tenant compte du message ci-dessou :
-Refactor this method to reduce its Cognitive Complexity from 33 to the 15 allowed.
-
 private static void generateContentXmlPersEnt(Dataset<Row> contentDs) {
-		StructType structType = getSchemaForContentXml("PM");
-		contentDs = contentDs
-				.filter(col(UsageEAIC.J6_TW_EAI_CDC_DCl.CT_PEO).notEqual("PP"))
-				.select(Utils.replaceEmptyColsWithNull(contentDs.columns()));
+    StructType structType = getSchemaForContentXml("PM");
 
-		Dataset<Row> transformedDs = contentDs.map((MapFunction<Row, Row>) (Row row) -> {
-			Row idfRow = RowFactory.create(
-					row.getString(row.fieldIndex(CD_RSD_FIS_ENT)),
-					row.getString(row.fieldIndex(NO_NIF_ENT)),
-					row.getString(row.fieldIndex(CN_IFO_ABS_ENT))
-			);
-			Row idf1Row = RowFactory.create(
-					row.getString(row.fieldIndex(CD_RSD_FIS_CNT_001)),
-					row.getString(row.fieldIndex(NO_NIF_PEO_CNT_001)),
-					row.getString(row.fieldIndex(CN_IFO_ABS_CNT_001))
-			);
+    contentDs = preprocessContentDs(contentDs);
 
-			Row idf2Row = RowFactory.create(
-					row.getString(row.fieldIndex(CD_RSD_FIS_CNT_002)),
-					row.getString(row.fieldIndex(NO_NIF_PEO_CNT_002)),
-					row.getString(row.fieldIndex(CN_IFO_ABS_CNT_002))
-			);
+    Dataset<Row> transformedDs = contentDs.map(
+            (MapFunction<Row, Row>) row -> transformRow(row, structType),
+            RowEncoder.apply(structType)
+    );
 
-			Row idf3Row = RowFactory.create(
-					row.getString(row.fieldIndex(CD_RSD_FIS_CNT_003)),
-					row.getString(row.fieldIndex(NO_NIF_PEO_CNT_003)),
-					row.getString(row.fieldIndex(CN_IFO_ABS_CNT_003))
-			);
+    try {
+        generateXmlFile(transformedDs, ENT, "CONTENT_ENT_FILE");
+    } catch (Exception e) {
+        LOGGER.error("Error when generating content XML: " + e.getMessage());
+    }
+}
 
-			Row idf4Row = RowFactory.create(
-					row.getString(row.fieldIndex(CD_RSD_FIS_CNT_004)),
-					row.getString(row.fieldIndex(NO_NIF_PEO_CNT_004)),
-					row.getString(row.fieldIndex(CN_IFO_ABS_CNT_004))
-			);
+private static Dataset<Row> preprocessContentDs(Dataset<Row> contentDs) {
+    return contentDs
+            .filter(col(UsageEAIC.J6_TW_EAI_CDC_DCl.CT_PEO).notEqual("PP"))
+            .select(Utils.replaceEmptyColsWithNull(contentDs.columns()));
+}
 
+private static Row transformRow(Row row, StructType structType) {
+    Row idfRow = createIdfRow(row, CD_RSD_FIS_ENT, NO_NIF_ENT, CN_IFO_ABS_ENT);
+    Row idf1Row = createIdfRow(row, CD_RSD_FIS_CNT_001, NO_NIF_PEO_CNT_001, CN_IFO_ABS_CNT_001);
+    Row idf2Row = createIdfRow(row, CD_RSD_FIS_CNT_002, NO_NIF_PEO_CNT_002, CN_IFO_ABS_CNT_002);
+    Row idf3Row = createIdfRow(row, CD_RSD_FIS_CNT_003, NO_NIF_PEO_CNT_003, CN_IFO_ABS_CNT_003);
+    Row idf4Row = createIdfRow(row, CD_RSD_FIS_CNT_004, NO_NIF_PEO_CNT_004, CN_IFO_ABS_CNT_004);
 
-			Row cnt1Row = RowFactory.create(
-					row.getString(row.fieldIndex(LN_PNY_PEO_CNT_001)),
-					row.getString(row.fieldIndex(LP_PEO_CNT_001)),
-					row.getString(row.fieldIndex(DN_PEO_CNT_001)),
-					row.getString(row.fieldIndex(AV_NAI_PEO_CNT_001)),
-					row.getString(row.fieldIndex(AY_NAI_PEO_CNT_001)),
-					row.getString(row.fieldIndex(AL_RUE_PEO_CNT_001)),
-					row.getString(row.fieldIndex(AL_BAT_PEO_CNT_001)),
-					listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_001))) ? row.getString(row.fieldIndex(AC_PEO_CNT_001)) : null,
-					!listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_001))) ? row.getString(row.fieldIndex(CD_DTB_ETG_CNT_001)) : null,
-					row.getString(row.fieldIndex(AL_CMN_PEO_CNT_001)),
-					row.getString(row.fieldIndex(AY_ADR_PEO_CNT_001)),
-					row.getString(row.fieldIndex(LN_UTI_PEO_CNT_001)),
-					idf1Row
-			);
+    Row cnt1Row = createContactRow(row, 1, idf1Row);
+    Row cnt2Row = createContactRow(row, 2, idf2Row);
+    Row cnt3Row = createContactRow(row, 3, idf3Row);
+    Row cnt4Row = createContactRow(row, 4, idf4Row);
 
-			Row cnt2Row = RowFactory.create(
-					row.getString(row.fieldIndex(LN_PNY_PEO_CNT_002)),
-					row.getString(row.fieldIndex(LP_PEO_CNT_002)),
-					row.getString(row.fieldIndex(DN_PEO_CNT_002)),
-					row.getString(row.fieldIndex(AV_NAI_PEO_CNT_002)),
-					row.getString(row.fieldIndex(AY_NAI_PEO_CNT_002)),
-					row.getString(row.fieldIndex(AL_RUE_PEO_CNT_002)),
-					row.getString(row.fieldIndex(AL_BAT_PEO_CNT_002)),
-					listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_002))) ? row.getString(row.fieldIndex(AC_PEO_CNT_002)) : null,
-					!listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_002))) ? row.getString(row.fieldIndex(CD_DTB_ETG_CNT_002)) : null,
-					row.getString(row.fieldIndex(AL_CMN_PEO_CNT_002)),
-					row.getString(row.fieldIndex(AY_ADR_PEO_CNT_002)),
-					row.getString(row.fieldIndex(LN_UTI_PEO_CNT_002)),
-					idf2Row
-			);
+    Row[] cntValues = getCntValues(row, cnt1Row, cnt2Row, cnt3Row, cnt4Row);
 
-			Row cnt3Row = RowFactory.create(
-					row.getString(row.fieldIndex(LN_PNY_PEO_CNT_003)),
-					row.getString(row.fieldIndex(LP_PEO_CNT_003)),
-					row.getString(row.fieldIndex(DN_PEO_CNT_003)),
-					row.getString(row.fieldIndex(AV_NAI_PEO_CNT_003)),
-					row.getString(row.fieldIndex(AY_NAI_PEO_CNT_003)),
-					row.getString(row.fieldIndex(AL_RUE_PEO_CNT_003)),
-					row.getString(row.fieldIndex(AL_BAT_PEO_CNT_003)),
-					row.getString(row.fieldIndex(AC_PEO_CNT_003)),
-					listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_003))) ? row.getString(row.fieldIndex(AC_PEO_CNT_003)) : null,
-					!listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_003))) ? row.getString(row.fieldIndex(CD_DTB_ETG_CNT_003)) : null,
-					row.getString(row.fieldIndex(AL_CMN_PEO_CNT_003)),
-					row.getString(row.fieldIndex(AY_ADR_PEO_CNT_003)),
-					row.getString(row.fieldIndex(LN_UTI_PEO_CNT_003)),
-					idf3Row
-			);
+    Row cptRow = createCptRow(row, cntValues);
 
-			Row cnt4Row = RowFactory.create(
-					row.getString(row.fieldIndex(LN_PNY_PEO_CNT_004)),
-					row.getString(row.fieldIndex(LP_PEO_CNT_004)),
-					row.getDate(row.fieldIndex(DN_PEO_CNT_004)),
-					row.getString(row.fieldIndex(AV_NAI_PEO_CNT_004)),
-					row.getString(row.fieldIndex(AY_NAI_PEO_CNT_004)),
-					row.getString(row.fieldIndex(AL_RUE_PEO_CNT_004)),
-					row.getString(row.fieldIndex(AL_BAT_PEO_CNT_004)),
-					listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_004))) ? row.getString(row.fieldIndex(AC_PEO_CNT_004)) : null,
-					!listCdPays.contains(row.getString(row.fieldIndex(AY_ADR_PEO_CNT_004))) ? row.getString(row.fieldIndex(CD_DTB_ETG_CNT_004)) : null,
-					row.getString(row.fieldIndex(AL_CMN_PEO_CNT_004)),
-					row.getString(row.fieldIndex(AY_ADR_PEO_CNT_004)),
-					row.getString(row.fieldIndex(LN_UTI_PEO_CNT_004)),
-					idf4Row
-			);
+    return RowFactory.create(
+            row.getString(row.fieldIndex(LL_ENT)),
+            row.getString(row.fieldIndex(LL_RAI_SOC_ENT)),
+            row.getString(row.fieldIndex(NO_SIR_ENT)),
+            row.getString(row.fieldIndex(AL_RUE_ENT)),
+            row.getString(row.fieldIndex(AL_BAT_ENT)),
+            row.getString(row.fieldIndex(AC_ENT)),
+            row.getString(row.fieldIndex(CD_DTB_ETG_ENT)),
+            row.getString(row.fieldIndex(AL_CMN_ENT)),
+            row.getString(row.fieldIndex(AY_ADR_ENT)),
+            row.getString(row.fieldIndex(CD_ACV_PSV_ENT)),
+            row.getInt(row.fieldIndex(QT_CNT)) == 0 ? idfRow : null,
+            cptRow
+    );
+}
 
-			Row[] cntValues = new Row[]{
-					row.getInt(row.fieldIndex(QT_CNT)) >= 1 && "02".equals(row.getString(row.fieldIndex(CD_ACV_PSV_ENT))) ? cnt1Row : null,
-					row.getInt(row.fieldIndex(QT_CNT)) >= 2 && "02".equals(row.getString(row.fieldIndex(CD_ACV_PSV_ENT))) ? cnt2Row : null,
-					row.getInt(row.fieldIndex(QT_CNT)) >= 3 && "02".equals(row.getString(row.fieldIndex(CD_ACV_PSV_ENT))) ? cnt3Row : null,
-					row.getInt(row.fieldIndex(QT_CNT)) >= 4 && "02".equals(row.getString(row.fieldIndex(CD_ACV_PSV_ENT))) ? cnt4Row : null,
-			};
+private static Row createIdfRow(Row row, String... fields) {
+    return RowFactory.create(
+            row.getString(row.fieldIndex(fields[0])),
+            row.getString(row.fieldIndex(fields[1])),
+            row.getString(row.fieldIndex(fields[2]))
+    );
+}
 
-			Row cptRow = RowFactory.create(
-					row.getString(row.fieldIndex(NO_IBA_CPT)),
-					row.getString(row.fieldIndex(CD_CAR_NMR_CLI_CPT)),
-					Utils.reformatDate(row.getDate(row.fieldIndex(DA_ENV_PRE_DMD_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
-					Utils.reformatDate(row.getDate(row.fieldIndex(DA_RPN_PRE_DMD_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
-					Utils.reformatDate(row.getDate(row.fieldIndex(DA_ENV_REL_DMD_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
-					Utils.reformatDate(row.getDate(row.fieldIndex(DA_RPN_REL_DMD_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
-					Utils.reformatDate(row.getDate(row.fieldIndex(DA_RGN_STA_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
-					!row.isNullAt(row.fieldIndex(CN_RGN_CPT)) ? String.valueOf(row.getInt(row.fieldIndex(CN_RGN_CPT))) : null,
-					Utils.reformatDate(row.getDate(row.fieldIndex(DA_ANE_CNA_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
-					Utils.reformatDate(row.getDate(row.fieldIndex(DF_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
-					cntValues
-			);
-			return RowFactory.create(
-					row.getString(row.fieldIndex(LL_ENT)),
-					row.getString(row.fieldIndex(LL_RAI_SOC_ENT)),
-					row.getString(row.fieldIndex(NO_SIR_ENT)),
-					row.getString(row.fieldIndex(AL_RUE_ENT)),
-					row.getString(row.fieldIndex(AL_BAT_ENT)),
-					row.getString(row.fieldIndex(AC_ENT)),
-					row.getString(row.fieldIndex(CD_DTB_ETG_ENT)),
-					row.getString(row.fieldIndex(AL_CMN_ENT)),
-					row.getString(row.fieldIndex(AY_ADR_ENT)),
-					row.getString(row.fieldIndex(CD_ACV_PSV_ENT)),
-					row.getInt(row.fieldIndex(QT_CNT)) == 0 ? idfRow : null,
-					cptRow
-			);
-		}, RowEncoder.apply(structType));
+private static Row createContactRow(Row row, int contactIndex, Row idfRow) {
+    String prefix = "CNT_00" + contactIndex;
+    return RowFactory.create(
+            row.getString(row.fieldIndex("LN_PNY_PEO_" + prefix)),
+            row.getString(row.fieldIndex("LP_PEO_" + prefix)),
+            row.getString(row.fieldIndex("DN_PEO_" + prefix)),
+            row.getString(row.fieldIndex("AV_NAI_PEO_" + prefix)),
+            row.getString(row.fieldIndex("AY_NAI_PEO_" + prefix)),
+            row.getString(row.fieldIndex("AL_RUE_PEO_" + prefix)),
+            row.getString(row.fieldIndex("AL_BAT_PEO_" + prefix)),
+            listCdPays.contains(row.getString(row.fieldIndex("AY_ADR_PEO_" + prefix)))
+                    ? row.getString(row.fieldIndex("AC_PEO_" + prefix))
+                    : null,
+            !listCdPays.contains(row.getString(row.fieldIndex("AY_ADR_PEO_" + prefix)))
+                    ? row.getString(row.fieldIndex("CD_DTB_ETG_" + prefix))
+                    : null,
+            row.getString(row.fieldIndex("AL_CMN_PEO_" + prefix)),
+            row.getString(row.fieldIndex("AY_ADR_PEO_" + prefix)),
+            row.getString(row.fieldIndex("LN_UTI_PEO_" + prefix)),
+            idfRow
+    );
+}
 
-		try {
-			generateXmlFile(transformedDs, ENT, "CONTENT_ENT_FILE");
-		} catch (Exception e) {
-			LOGGER.error("Error when generate content XML :" + e.getMessage());
-		}
+private static Row[] getCntValues(Row row, Row... contactRows) {
+    Row[] cntValues = new Row[contactRows.length];
+    for (int i = 0; i < contactRows.length; i++) {
+        if (row.getInt(row.fieldIndex(QT_CNT)) >= (i + 1) && "02".equals(row.getString(row.fieldIndex(CD_ACV_PSV_ENT)))) {
+            cntValues[i] = contactRows[i];
+        } else {
+            cntValues[i] = null;
+        }
+    }
+    return cntValues;
+}
 
-	}
+private static Row createCptRow(Row row, Row[] cntValues) {
+    return RowFactory.create(
+            row.getString(row.fieldIndex(NO_IBA_CPT)),
+            row.getString(row.fieldIndex(CD_CAR_NMR_CLI_CPT)),
+            Utils.reformatDate(row.getDate(row.fieldIndex(DA_ENV_PRE_DMD_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+            Utils.reformatDate(row.getDate(row.fieldIndex(DA_RPN_PRE_DMD_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+            Utils.reformatDate(row.getDate(row.fieldIndex(DA_ENV_REL_DMD_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+            Utils.reformatDate(row.getDate(row.fieldIndex(DA_RPN_REL_DMD_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+            Utils.reformatDate(row.getDate(row.fieldIndex(DA_RGN_STA_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+            !row.isNullAt(row.fieldIndex(CN_RGN_CPT)) ? String.valueOf(row.getInt(row.fieldIndex(CN_RGN_CPT))) : null,
+            Utils.reformatDate(row.getDate(row.fieldIndex(DA_ANE_CNA_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+            Utils.reformatDate(row.getDate(row.fieldIndex(DF_CPT)), GeneralConstants.DATE_FORMAT.DDMMYYYY),
+            cntValues
+    );
+}
